@@ -17,7 +17,7 @@
 		string b = ret.IsSuccess() == true ? "success" : "failed";
 		string v = "Test ret.IsSucces: " + b;
 		
-		cout << v;
+		cout << v <<"\n";
 
 		b = ret.IsFailed() == true ? "success" : "failed";
 		v = "Test ret.IsFailed: " + b;
