@@ -1,7 +1,11 @@
-#pragma once
+//#pragma once
 #include "Direction.h"
+#include "GReturn.h"
 
-__interface SwipeBehavior
+class SwipeBehavior
 {
+	SwipeBehavior();
+	~SwipeBehavior();
 
+	GReturn Swipe(Direction* dir);
 }; 
