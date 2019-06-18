@@ -2,6 +2,7 @@
 #include <string>
 
 #include "GReturn.h"
+#include "SwipeBehavior.h"
 
 	int main() {
 
@@ -14,6 +15,8 @@
 			ret = GReturn::SuccessReturn();
 		}
 
+		SwipeBehavior* sb = new SwipeBehavior();
+
 		string b = ret.IsSuccess() == true ? "success" : "failed";
 		string v = "Test ret.IsSucces: " + b;
 		
@@ -23,6 +26,9 @@
 		v = "Test ret.IsFailed: " + b;
 		
 		cout << v;
+
+		ret = sb->Swipe(North);
+		cout << ret.IsFailed();
 
 		cin >> v;
 		return 0;

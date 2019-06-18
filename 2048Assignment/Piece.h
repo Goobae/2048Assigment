@@ -6,8 +6,6 @@ class Piece
 public:
 	Piece(Piece* east, Piece* north, Piece* west, Piece* south);
 	~Piece();
-
-	void Swipe(Direction direction);
 	
 private:
 	Piece* northPiece;
