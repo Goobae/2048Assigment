@@ -4,8 +4,13 @@
 class Piece
 {
 public:
+	Piece();
 	Piece(Piece* east, Piece* north, Piece* west, Piece* south);
 	~Piece();
+
+	int GetScore();
+	void SetScore(int score);
+	void Draw();
 	
 private:
 	Piece* northPiece;

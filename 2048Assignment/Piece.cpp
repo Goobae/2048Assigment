@@ -1,4 +1,14 @@
 #include "Piece.h"
+Piece::Piece()
+{
+	eastPiece = nullptr;
+	northPiece = nullptr;
+	westPiece = nullptr;
+	southPiece = nullptr;
+
+	currentScore = 0;
+}
+
 Piece::Piece(Piece* east, Piece* north, Piece* west, Piece* south)
 {
 	eastPiece = east;
@@ -13,6 +23,23 @@ Piece::~Piece()
 {
 	eastPiece = northPiece = westPiece = southPiece = 0;
 }
+
+int Piece::GetScore()
+{
+	return currentScore;
+}
+
+void Piece::SetScore(int score)
+{
+	currentScore = score;
+}
+
+void Piece::Draw()
+{
+
+}
+
+
 //
 //void Piece::Swipe(Direction direction)
 //{
