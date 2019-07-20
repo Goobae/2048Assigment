@@ -9,16 +9,6 @@ Piece::Piece()
 	currentScore = 0;
 }
 
-Piece::Piece(Piece* east, Piece* north, Piece* west, Piece* south)
-{
-	eastPiece = east;
-	northPiece = north;
-	westPiece = west;
-	southPiece = south;
-
-	currentScore = 0;
-}
-
 Piece::~Piece()
 {
 	eastPiece = northPiece = westPiece = southPiece = 0;
