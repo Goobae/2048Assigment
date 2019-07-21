@@ -2,7 +2,7 @@
 
 Board::Board()
 {
-	topLeftPiece = new Piece();
+	zeroZero = new Piece("0 0");
 }
 
 Board::~Board()
@@ -22,40 +22,40 @@ void Board::Swipe(Direction direction)
 
 void Board::GenerateBoard()
 {
-	Piece* tmpPiece = topLeftPiece;
-	Piece* prevFirstPiece = topLeftPiece;
+	int boardSize = 4;
 
-	for (int a = 0; a < 4; a++)
+	Piece* tmpPiece = zeroZero;
+	Piece* prevFirstPiece = zeroZero;
+
+	//starting from the bottom left -> top right
+	for (int y = 0; y < boardSize; y++)
 	{
-		for (int b = 0; b < 3; b++)
+		for (int x = 0; x < boardSize; x++)
 		{
-			Piece* t = new Piece();
+			//each game always has a bottom left piece created, so skip it
+			if (x == 0 && y == 0) continue;
+			
+			//new temp piece
+			Piece* t = new Piece(x + " " + y);
 
-			//take care of left and right pieces
-			if (b != 0)
+			if (x != 0) {
+				t->westPiece = tmpPiece;
+				tmpPiece->eastPiece = t;
+			}
+
+			if (y != 0)
 			{
-				t->eastPiece = tmpPiece;
-				tmpPiece->westPiece = t;
+				t->southPiece = tmpPiece->southPiece->eastPiece;
+				t->southPiece->northPiece = t;
 			}
-
-			//take care of top pieces and south
-			if (a != 0) {
-				t->northPiece = tmpPiece->northPiece->eastPiece;
-				tmpPiece->northPiece->eastPiece->southPiece = t;
-			}
-
-			if (b == 0) {
-				prevFirstPiece = t;
-			}
+			////bottom and top rule
+			//if (y != 0 && y != boardSize - 1 && x != 0 && x != boardSize - 1)
+			//{
+			//	t->southPiece = tmpPiece->southPiece->eastPiece;
+			//	t->southPiece->northPiece = t;
+			//}
 
 			tmpPiece = t;
-		}
-
-		if (a < 4)
-		{
-			tmpPiece = new Piece();
-			prevFirstPiece->southPiece = tmpPiece;
-			tmpPiece->northPiece = prevFirstPiece;
 		}
 	}
 }

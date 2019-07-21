@@ -14,5 +14,5 @@ public:
 	void GenerateBoard();
 
 private:
-	Piece* topLeftPiece;
+	Piece* zeroZero;
 };

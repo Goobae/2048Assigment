@@ -1,10 +1,14 @@
 #pragma once
 #include "Direction.h"
+#include <string>
+
+using namespace std;
 
 class Piece
 {
 public:
 	Piece();
+	Piece(string representation);
 	~Piece();
 
 	int GetScore();
@@ -18,4 +22,5 @@ public:
 
 private:
 	int currentScore;
+	string rep;
 };

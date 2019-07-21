@@ -1,4 +1,6 @@
 #include "Piece.h"
+#include <iostream>
+
 Piece::Piece()
 {
 	eastPiece = nullptr;
@@ -9,9 +11,15 @@ Piece::Piece()
 	currentScore = 0;
 }
 
+Piece::Piece(string representation)
+{
+	rep = representation;
+}
+
 Piece::~Piece()
 {
 	eastPiece = northPiece = westPiece = southPiece = 0;
+	rep = "";
 }
 
 int Piece::GetScore()
@@ -26,7 +34,7 @@ void Piece::SetScore(int score)
 
 void Piece::Draw()
 {
-
+	cout << " " + currentScore;
 }
 
 
