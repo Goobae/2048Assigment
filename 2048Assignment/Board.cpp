@@ -30,37 +30,29 @@ void Board::GenerateBoard()
 	//starting from the bottom left -> top right
 	for (int y = 0; y < boardSize; y++)
 	{
-		if (y != 0)
-		{
-			prevFirstPiece = tmpPiece;
-		}
-
 		for (int x = 0; x < boardSize; x++)
 		{
-			//each game always has a bottom left piece created, so skip it
-			if (x == 0 && y == 0) continue;
+			if (x != 0 || y != 0) {
 
-			//new temp piece
-			Piece* t = new Piece(x,y);
+				Piece* t = new Piece(x, y);
 
-			if (x != 0) {
-				t->westPiece = tmpPiece;
-				tmpPiece->eastPiece = t;
-			}
+				if (x != 0) {
+					t->westPiece = tmpPiece;
+					tmpPiece->eastPiece = t;
+				}
+				else
+				{ 	
+					prevFirstPiece = t;
+				}
 
-			if (y != 0)
-			{
-				t->southPiece = tmpPiece->southPiece->eastPiece;
-				t->southPiece->northPiece = t;
-			}
-			////bottom and top rule
-			//if (y != 0 && y != boardSize - 1 && x != 0 && x != boardSize - 1)
-			//{
-			//	t->southPiece = tmpPiece->southPiece->eastPiece;
-			//	t->southPiece->northPiece = t;
-			//}
+				if (y != 0)
+				{
+					t->southPiece = tmpPiece->southPiece->eastPiece;
+					t->southPiece->northPiece = t;
+				}
 
-			tmpPiece = t;
+				tmpPiece = t;
+			}			
 		}
 	}
 }
