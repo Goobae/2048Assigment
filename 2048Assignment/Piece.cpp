@@ -9,17 +9,20 @@ Piece::Piece()
 	southPiece = nullptr;
 
 	currentScore = 0;
+	_x = 0;
+	_y = 0;
 }
 
-Piece::Piece(string representation)
+Piece::Piece(int x, int y)
 {
-	rep = representation;
+	Piece();
+	_x = x;
+	_y = y;
 }
 
 Piece::~Piece()
 {
-	eastPiece = northPiece = westPiece = southPiece = 0;
-	rep = "";
+	eastPiece = northPiece = westPiece = southPiece = nullptr;
 }
 
 int Piece::GetScore()

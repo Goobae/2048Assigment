@@ -8,7 +8,7 @@ class Piece
 {
 public:
 	Piece();
-	Piece(string representation);
+	Piece(int x, int y);
 	~Piece();
 
 	int GetScore();
@@ -22,5 +22,6 @@ public:
 
 private:
 	int currentScore;
-	string rep;
+	int _x;
+	int _y;
 };

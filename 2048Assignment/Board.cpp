@@ -2,7 +2,7 @@
 
 Board::Board()
 {
-	zeroZero = new Piece("0 0");
+	zeroZero = new Piece(0,0);
 }
 
 Board::~Board()
@@ -30,13 +30,18 @@ void Board::GenerateBoard()
 	//starting from the bottom left -> top right
 	for (int y = 0; y < boardSize; y++)
 	{
+		if (y != 0)
+		{
+			prevFirstPiece = tmpPiece;
+		}
+
 		for (int x = 0; x < boardSize; x++)
 		{
 			//each game always has a bottom left piece created, so skip it
 			if (x == 0 && y == 0) continue;
-			
+
 			//new temp piece
-			Piece* t = new Piece(x + " " + y);
+			Piece* t = new Piece(x,y);
 
 			if (x != 0) {
 				t->westPiece = tmpPiece;
