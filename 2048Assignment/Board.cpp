@@ -47,6 +47,7 @@ void Board::GenerateBoard()
 
 				if (y != 0)
 				{
+					//define southPiece !!!!!
 					t->southPiece = tmpPiece->southPiece->eastPiece;
 					t->southPiece->northPiece = t;
 				}
