@@ -20,8 +20,10 @@ public:
 	Piece* eastPiece;
 	Piece* westPiece;
 
-private:
-	int currentScore;
 	int _x;
 	int _y;
+
+private:
+	int currentScore;
+
 };
