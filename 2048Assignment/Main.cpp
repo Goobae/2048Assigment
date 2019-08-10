@@ -36,7 +36,10 @@
 		Board* board = new Board();
 		board->GenerateBoard();
 
-
+		string v = "";
+		//cin >> v;
+		char* a = new char('a');
+		cin.read(a, 1);
 		return 0;
 
 	}

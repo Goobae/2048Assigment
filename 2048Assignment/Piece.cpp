@@ -3,12 +3,15 @@
 
 Piece::Piece()
 {
-	eastPiece = nullptr;
-	northPiece = nullptr;
-	westPiece = nullptr;
-	southPiece = nullptr;
+	//eastPiece = nullptr;
+	//northPiece = nullptr;
+	//westPiece = nullptr;
+	//southPiece = nullptr;
+	prevPiece = nullptr;
+	nextPiece = nullptr;
 
 	currentScore = 0;
+
 	_x = 0;
 	_y = 0;
 }
@@ -22,7 +25,7 @@ Piece::Piece(int x, int y)
 
 Piece::~Piece()
 {
-	eastPiece = northPiece = westPiece = southPiece = nullptr;
+	/*eastPiece = northPiece = westPiece = southPiece = nullptr;*/
 }
 
 int Piece::GetScore()
@@ -35,9 +38,15 @@ void Piece::SetScore(int score)
 	currentScore = score;
 }
 
-void Piece::Draw()
+void Piece::DrawScore()
 {
 	cout << " " + currentScore;
+}
+
+void Piece::DrawCoordinates()
+{
+	//string out =;
+	cout << "[" << _x << "," << _y << "]";
 }
 
 

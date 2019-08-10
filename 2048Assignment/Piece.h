@@ -13,17 +13,16 @@ public:
 
 	int GetScore();
 	void SetScore(int score);
-	void Draw();
+	void DrawScore();
+	void DrawCoordinates();
 	
-	Piece* northPiece;
-	Piece* southPiece;
-	Piece* eastPiece;
-	Piece* westPiece;
+	Piece* nextPiece;
+	Piece* prevPiece;
 
-	int _x;
-	int _y;
+
 
 private:
 	int currentScore;
-
+	int _x;
+	int _y;
 };

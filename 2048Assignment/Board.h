@@ -11,11 +11,15 @@ public:
 	Board();
 	~Board();
 
+	Piece* GetPiece(int x, int y);
+
 	void Draw();
 	void Swipe(Direction direction);
 
 	void GenerateBoard();
 
 private:
-	Piece* zeroZero;
+	Piece* Pieces;
+
+	
 };
