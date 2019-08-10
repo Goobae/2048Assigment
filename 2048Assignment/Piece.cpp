@@ -18,7 +18,11 @@ Piece::Piece()
 
 Piece::Piece(int x, int y)
 {
-	Piece();
+	prevPiece = nullptr;
+	nextPiece = nullptr;
+
+	currentScore = 0;
+
 	_x = x;
 	_y = y;
 }
@@ -40,7 +44,7 @@ void Piece::SetScore(int score)
 
 void Piece::DrawScore()
 {
-	cout << " " + currentScore;
+	cout << currentScore;
 }
 
 void Piece::DrawCoordinates()

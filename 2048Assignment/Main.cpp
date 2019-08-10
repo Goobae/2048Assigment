@@ -36,6 +36,15 @@
 		Board* board = new Board();
 		board->GenerateBoard();
 
+		Piece* p = board->GetPiece(3, 3);
+
+		if (p != nullptr)
+		{
+			p->DrawScore();
+			cout << endl;
+			p->DrawCoordinates();
+		}
+
 		string v = "";
 		//cin >> v;
 		char* a = new char('a');

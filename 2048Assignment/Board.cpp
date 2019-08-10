@@ -14,8 +14,20 @@ Board::~Board()
 
 Piece* Board::GetPiece(int x, int y)
 {
+	Piece* temp = nullptr;
+
+	if (x >= boardSize || y >= boardSize || x < 0  || y  < 0) {
+		return temp;
+	}
 	
-	return new Piece();
+	temp = Pieces;
+
+	for (int i = 0; i < y * boardSize + x; i++)
+	{
+		temp = temp->nextPiece;
+	}
+
+	return temp;
 }
 
 void Board::Draw()
@@ -30,7 +42,6 @@ void Board::Swipe(Direction direction)
 
 void Board::GenerateBoard()
 {
-	int boardSize = 4;
 	int y = 0;
 	int x = 0;
 
@@ -49,6 +60,7 @@ void Board::GenerateBoard()
 		if (i % boardSize == 0) { y++; x = 0; } //simulate new row
 
 		temp = new Piece(x, y);
+		temp->SetScore(i);
 		
 		temp->prevPiece = prev_piece;
 		prev_piece->nextPiece = temp;
