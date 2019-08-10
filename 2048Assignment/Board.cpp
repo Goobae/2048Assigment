@@ -35,7 +35,9 @@ void Board::GenerateBoard()
 		{
 
 			Piece* t = new Piece(x, y);
-			//y = 1, x = 0
+			//y = 1, x = 1 errors out (t-> south piece is null at 56)
+			// tmp-> south piece is null
+			// make sure y = 1, x = 0 is linked to bot row piece;
 			if (y != 0 && x != 0)
 			{
 				t->westPiece = tmpPiece;
@@ -50,11 +52,21 @@ void Board::GenerateBoard()
 					t->southPiece = prevFirstPiece;
 					prevFirstPiece->northPiece = t;
 				}
-				else {
-					zeroZero = t;
+				else
+				{
+					if (y == 0)
+					{
+						zeroZero = t;
+					}
+					else
+					{
+						t->southPiece = prevFirstPiece;
+						prevFirstPiece->northPiece = t;
+						
+					}
+
 					prevFirstPiece = t;
 				}
-
 			}
 
 			cout << " X:" << t->_x << "Y:" << t->_y << " ";
@@ -63,7 +75,14 @@ void Board::GenerateBoard()
 				cout << endl;
 			}
 
-			tmpPiece = t;
+			if (x == 0)
+			{
+				tmpPiece = prevFirstPiece;
+			}
+			else
+			{
+				tmpPiece = t;
+			}
 		}
 	}
 }
