@@ -19,8 +19,7 @@ public:
 	void GenerateBoard();
 
 private:
-	int boardSize = 4;
-	Piece* Pieces;
-
-	
+	int boardSize;
+	Piece* Pieces_front;
+	Piece* Pieces_back;
 };

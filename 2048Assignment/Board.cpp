@@ -1,10 +1,11 @@
 #include "Board.h"
 #include <string>
+#include <list>
 
 Board::Board()
 {
-	Pieces = NULL;
-	/*zeroZero = new Piece(0, 0);*/
+	Pieces_front = NULL;
+	boardSize = 4;
 }
 
 Board::~Board()
@@ -20,7 +21,7 @@ Piece* Board::GetPiece(int x, int y)
 		return temp;
 	}
 	
-	temp = Pieces;
+	temp = Pieces_front;
 
 	for (int i = 0; i < y * boardSize + x; i++)
 	{
@@ -37,7 +38,25 @@ void Board::Draw()
 
 void Board::Swipe(Direction direction)
 {
+	for (int i = 0; i < boardSize*boardSize; i++)
+	{
 
+	}
+
+	switch (direction)
+	{
+	case Left:
+		//pieces.push_back();
+		break;
+	case Up:
+		break;
+	case Right:
+		break;
+	case Down:
+		break;
+	default:
+		break;
+	}
 }
 
 void Board::GenerateBoard()
@@ -48,11 +67,11 @@ void Board::GenerateBoard()
 	Piece* temp;
 	Piece* prev_piece;
 
-	Pieces = new  Piece(x, y);
-	x++;
+	Pieces_front = new  Piece(x, y);
+	temp = Pieces_front;
+	prev_piece = Pieces_front;
 
-	temp = Pieces;
-	prev_piece = Pieces;
+	x++;
 
 	for (int i = 0; i < boardSize * boardSize; i++)
 	{
@@ -60,17 +79,28 @@ void Board::GenerateBoard()
 		if (i % boardSize == 0) { y++; x = 0; } //simulate new row
 
 		temp = new Piece(x, y);
-		temp->SetScore(i);
-		
+		temp->SetScore(i);		
 		temp->prevPiece = prev_piece;
+
 		prev_piece->nextPiece = temp;
-
-		x++;
 		prev_piece = temp;
+
+		x++;		
 	}
+	
+	temp = Pieces_front;
 
+	do
+	{
+		if (Pieces_back == nullptr)
+		{
+			prev_piece;
+		}
+		temp = temp->nextPiece;
 
-	temp = Pieces;
+	} while (temp != nullptr);
+
+	temp = Pieces_front;
 	int itr = 0;
 	do
 	{
@@ -90,4 +120,9 @@ void Board::GenerateBoard()
 		temp = temp->nextPiece;
 
 	} while (temp != nullptr);
+}
+
+bool ProcessRow(list <Piece*> ele)
+{
+
 }

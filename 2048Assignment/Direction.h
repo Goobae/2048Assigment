@@ -1,9 +1,9 @@
 #pragma once
 enum Direction
 {
-	East,
-	North,
-	West,
-	South
+	Left,
+	Up,
+	Right,
+	Down
 };
 
