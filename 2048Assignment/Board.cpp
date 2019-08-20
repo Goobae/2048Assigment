@@ -1,6 +1,5 @@
 #include "Board.h"
 #include <string>
-#include <list>
 
 Board::Board()
 {
@@ -122,7 +121,39 @@ void Board::GenerateBoard()
 	} while (temp != nullptr);
 }
 
-bool ProcessRow(list <Piece*> ele)
+void ProcessRow(Piece* p, Direction dir)
 {
+	ProcessRowHelper(p, dir);
+} 
+
+void ProcessRowHelper(Piece* curPiece, Direction dir)
+{
+	Piece* nextPiece;
+
+	switch (dir)
+	{
+	case Left:
+		//nextPiece = 
+		break;
+	case Up:
+		break;
+	case Right:
+		break;
+	case Down:
+		break;
+	default:
+		break;
+	}
+}
+
+bool ProcessNumber(int num)
+{
+	if (num == 1 ||
+		num % 2 == 0)
+	{
+		return true;
+	}
+
+	return false;
 
 }
