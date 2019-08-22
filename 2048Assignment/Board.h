@@ -16,10 +16,15 @@ public:
 	void Draw();
 	void Swipe(Direction direction);
 
+	
 	void GenerateBoard();
 
 private:
 	int boardSize;
+
 	Piece* Pieces_front;
 	Piece* Pieces_back;
+
+	void ProcessRow(Piece* p, Direction dir);
+	void ProcessRowHelper(Piece* curPiece, Direction dir);
 };

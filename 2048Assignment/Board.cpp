@@ -37,6 +37,9 @@ void Board::Draw()
 
 void Board::Swipe(Direction direction)
 {
+
+
+	//FIGUREO OTO HANDLE THIS
 	for (int i = 0; i < boardSize*boardSize; i++)
 	{
 
@@ -121,29 +124,34 @@ void Board::GenerateBoard()
 	} while (temp != nullptr);
 }
 
-void ProcessRow(Piece* p, Direction dir)
+void Board::ProcessRow(Piece* p, Direction dir)
 {
-	ProcessRowHelper(p, dir);
+	for (int a = 0; a < boardSize; a++) {
+		ProcessRowHelper(p, dir);
+	}
 } 
 
-void ProcessRowHelper(Piece* curPiece, Direction dir)
+void Board::ProcessRowHelper(Piece* curPiece, Direction dir)
 {
 	Piece* nextPiece;
+	
+	if (curPiece->nextPiece == nullptr || curPiece->prevPiece == nullptr)
+		return;
 
-	switch (dir)
+	Piece* p = nextPiece;
+
+	for (int a = 0; a < boardSize; a++)
 	{
-	case Left:
-		//nextPiece = 
-		break;
-	case Up:
-		break;
-	case Right:
-		break;
-	case Down:
-		break;
-	default:
-		break;
+		//WE NEED TO SET NEXT PIECE TO BE THE ACTUAL NEXT 'PIECE'IN THE ROW
 	}
+
+	if (ProcessNumber(curPiece->GetScore() + nextPiece->GetScore()))
+	{
+		curPiece->SetScore(0);
+		nextPiece->SetScore(nextPiece->GetScore() * 2);
+	}
+
+	return ProcessRowHelper(nextPiece, dir);
 }
 
 bool ProcessNumber(int num)

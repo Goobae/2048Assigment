@@ -12,8 +12,8 @@ Piece::Piece()
 
 	currentScore = 0;
 
-	_x = 0;
-	_y = 0;
+	X =_x = 0;
+	Y =_y = 0;
 }
 
 Piece::Piece(int x, int y)
@@ -23,8 +23,8 @@ Piece::Piece(int x, int y)
 
 	currentScore = 0;
 
-	_x = x;
-	_y = y;
+	X = _x = x;
+	Y = _y = y;
 }
 
 Piece::~Piece()

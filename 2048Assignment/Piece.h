@@ -11,6 +11,8 @@ public:
 	Piece(int x, int y);
 	~Piece();
 
+	int X;
+	int Y;
 	int GetScore();
 	void SetScore(int score);
 	void DrawScore();
@@ -18,8 +20,6 @@ public:
 	
 	Piece* nextPiece;
 	Piece* prevPiece;
-
-
 
 private:
 	int currentScore;
