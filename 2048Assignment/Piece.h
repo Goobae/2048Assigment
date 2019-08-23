@@ -14,9 +14,12 @@ public:
 	int X;
 	int Y;
 	int GetScore();
+
 	void SetScore(int score);
 	void DrawScore();
 	void DrawCoordinates();
+
+	Piece* GetAfter(int numIterations);
 	
 	Piece* nextPiece;
 	Piece* prevPiece;

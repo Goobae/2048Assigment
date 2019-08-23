@@ -53,7 +53,38 @@ void Piece::DrawCoordinates()
 	cout << "[" << _x << "," << _y << "]";
 }
 
+Piece* Piece::GetAfter(int numIterations)
+{
+	if (numIterations == 0)
+		return this;
+	
+	Piece* p = this;
 
+	do
+	{
+		if (numIterations > 0) {
+
+			
+			if (p->nextPiece == nullptr)
+			{
+				return this;
+			}
+
+			p = p->nextPiece;
+		}
+		else
+		{
+			if (p->prevPiece == nullptr)
+			{
+				return this;
+			}
+			p = p->prevPiece;
+		}
+		numIterations--;
+	} while (numIterations > 0 || numIterations < 0);
+
+	return p;
+}
 //
 //void Piece::Swipe(Direction direction)
 //{

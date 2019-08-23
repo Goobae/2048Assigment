@@ -25,6 +25,6 @@ private:
 	Piece* Pieces_front;
 	Piece* Pieces_back;
 
-	void ProcessRow(Piece* p, Direction dir);
-	void ProcessRowHelper(Piece* curPiece, Direction dir);
+	void ProcessRow(Direction dir);
+	bool ProcessNumber(int num);
 };

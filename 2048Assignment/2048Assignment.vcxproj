@@ -117,12 +117,14 @@
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Direction.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GReturn.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="SwipeBehavior.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GReturn.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Piece.cpp" />
