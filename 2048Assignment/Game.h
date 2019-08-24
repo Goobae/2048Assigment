@@ -1,7 +1,10 @@
 #pragma once
 #include <string>
 #include "Board.h"
-#include <stdio.h>
+#include <conio.h>
+#include <iostream>
+#include <stdlib.h>
+#include "UserRespone.h"
 
 using namespace std;
 
@@ -15,8 +18,11 @@ public:
 	void Play();
 private:
 	void DrawGame();
+	void IsGameOver();
+
+	bool isGameOver;
 	Board* board;
 
-	Direction GetUserInputAndClean();
+	UserRespone* GetUserInputAndClean();
 };
 

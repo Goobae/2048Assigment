@@ -2,6 +2,7 @@
 
 Game::Game()
 {
+	board = new Board();
 }
 
 Game::~Game()
@@ -10,36 +11,39 @@ Game::~Game()
 
 void Game::Initialize()
 {
-	board = new Board();
 	board->GenerateBoard();
+	board->SetRandomScores();
 }
 
 void Game::Play()
 {
-	Direction input;
-
+	UserRespone* input;
+	DrawGame();
 	do {
-		DrawGame();
-		input = GetUserInputAndClean();
-	} while (input != Unknown);
+			input = GetUserInputAndClean();
+			board->Swipe(input->Dir);
+			DrawGame();
+		
+	} while (input->IsValidResponse || input->IsContinue);
+
+	puts("The Game Has Ended!");
 }
 
 void Game::DrawGame()
 {
-	// CSI[2J clears screen, CSI[H moves the cursor to top-left corner
-	//std::cout << "\x1B[2J\x1B[H";
+	system("CLS");
 
 	if (board != nullptr)
 	{
-		board->Draw();
+		board->DrawScores();
 	}
 }
 
-Direction Game::GetUserInputAndClean()
+void Game::IsGameOver()
 {
-	//string input = getchar();
+}
 
-	
-
-	return Unknown;
+UserRespone* Game::GetUserInputAndClean()
+{
+	return new UserRespone(_getch());	
 }

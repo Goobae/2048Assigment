@@ -2,6 +2,10 @@
 #include "Direction.h"
 #include "Piece.h"
 #include <iostream>
+#include <stdlib.h>     
+#include <time.h>     
+#include <string>
+#include <vector>
 
 using namespace std;
 
@@ -11,9 +15,12 @@ public:
 	Board();
 	~Board();
 
+	void SetRandomScores();
+
 	Piece* GetPiece(int x, int y);
 
-	void Draw();
+	void DrawCoordinates();
+	void DrawScores();
 	void Swipe(Direction direction);
 
 	
@@ -26,5 +33,6 @@ private:
 	Piece* Pieces_back;
 
 	void ProcessRow(Direction dir);
+	void ProcessGroup(vector<Piece*> toProcess, int totalScore);
 	bool ProcessNumber(int num);
 };

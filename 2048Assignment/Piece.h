@@ -14,8 +14,10 @@ public:
 	int X;
 	int Y;
 	int GetScore();
+	int GetId();
 
 	void SetScore(int score);
+	void SetId(int id);
 	void DrawScore();
 	void DrawCoordinates();
 
@@ -28,4 +30,5 @@ private:
 	int currentScore;
 	int _x;
 	int _y;
+	int _id;
 };

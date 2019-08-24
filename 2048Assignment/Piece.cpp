@@ -37,9 +37,20 @@ int Piece::GetScore()
 	return currentScore;
 }
 
+
+int Piece::GetId()
+{
+	return _id;
+}
+
 void Piece::SetScore(int score)
 {
 	currentScore = score;
+}
+
+void Piece::SetId(int id)
+{
+	_id = id;
 }
 
 void Piece::DrawScore()

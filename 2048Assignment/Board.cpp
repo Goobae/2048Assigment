@@ -1,5 +1,5 @@
 #include "Board.h"
-#include <string>
+
 
 Board::Board()
 {
@@ -9,6 +9,25 @@ Board::Board()
 
 Board::~Board()
 {
+
+}
+
+void Board::SetRandomScores()
+{
+	/* initialize random seed: */
+	srand(time(NULL));
+
+	int iter = 0;
+	/* generate secret number between 1 and 10: */
+	do
+	{
+		int x = rand() % boardSize;
+		int y = rand() % boardSize;
+
+		Piece* p = GetPiece(x, y);
+		p->SetScore(2);
+		iter++;
+	} while (iter < 2);
 
 }
 
@@ -30,7 +49,7 @@ Piece* Board::GetPiece(int x, int y)
 	return temp;
 }
 
-void Board::Draw()
+void Board::DrawCoordinates()
 {
 	Piece* temp = Pieces_front;
 	int itr = 0;
@@ -52,32 +71,38 @@ void Board::Draw()
 		temp = temp->nextPiece;
 
 	} while (temp != nullptr);
+}
 
-	//cout << endl;
+void Board::DrawScores()
+{
+	Piece* temp = Pieces_front;
+	int itr = 0;
+	do
+	{
+		temp->DrawScore();
 
-	//temp = Pieces_front;
-	//temp->DrawScore();
-	//temp = temp->GetAfter(5);
-	//temp->DrawScore();
-	//cout << endl;
+		if (itr == boardSize - 1)
+		{
+			cout << endl;
+			itr = 0;
+		}
+		else
+		{
+			cout << " ";
+			itr++;
+		}
 
-	//temp = Pieces_front;
-	//temp->DrawScore();
-	//temp = temp->GetAfter(2);
-	//temp->DrawScore();
-	//cout << endl;
+		temp = temp->nextPiece;
 
-	//temp = Pieces_front;
-	//temp->DrawScore();
-	//temp = temp->GetAfter(-7);
-	//temp->DrawScore();
-	//cout << endl;
-
+	} while (temp != nullptr);
 }
 
 void Board::Swipe(Direction direction)
 {
-	ProcessRow(direction);
+	if (direction != Unknown)
+	{
+		ProcessRow(direction);
+	}
 }
 
 void Board::GenerateBoard()
@@ -100,7 +125,8 @@ void Board::GenerateBoard()
 		if (i % boardSize == 0) { y++; x = 0; } //simulate new row
 
 		temp = new Piece(x, y);
-		temp->SetScore(i);
+		temp->SetScore(0);
+		temp->SetId(i);
 		temp->prevPiece = prev_piece;
 
 		prev_piece->nextPiece = temp;
@@ -140,7 +166,9 @@ void Board::ProcessRow(Direction dir)
 		*/
 
 		//iterate through the board to do the processing
+	vector<Piece*> toPorcess(boardSize);
 	int iterator = 0;
+	int tempScore = 0;
 	do
 	{
 		//need to make sure we start with the  correct first piece/last piece
@@ -167,13 +195,38 @@ void Board::ProcessRow(Direction dir)
 			break;
 		}
 
-		if (ProcessNumber(curPiece->GetScore() + nextPiece->GetScore()))
+		if (curPiece->GetScore() != 0)
 		{
-			curPiece->SetScore(0);
-			nextPiece->SetScore(nextPiece->GetScore() * 2);
+			tempScore = curPiece->GetScore();
+		}
+
+		if (ProcessNumber(curPiece->GetScore() + nextPiece->GetScore()) 
+			|| nextPiece->GetScore() == tempScore
+			|| nextPiece->GetScore() == 0)
+		{
+			toPorcess.push_back(curPiece);
+		}
+		else
+		{
+			ProcessGroup(toPorcess, tempScore - curPiece->GetScore());
 		}
 
 	} while (iterator < boardSize - 1);
+}
+
+void Board::ProcessGroup(vector<Piece*> toProcess, int totalScore)
+{
+	for (int i = 0; i < toProcess.size(); i++)
+	{
+		if (i == toProcess.size() - 1)
+		{
+			toProcess.at(i)->SetScore(totalScore);
+		}
+		else
+		{
+			toProcess.at(i)->SetScore(0);
+		}
+	}
 }
 
 bool Board::ProcessNumber(int num)
@@ -185,5 +238,4 @@ bool Board::ProcessNumber(int num)
 	}
 
 	return false;
-
 }
