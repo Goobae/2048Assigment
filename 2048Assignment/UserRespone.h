@@ -1,15 +1,16 @@
 #pragma once
 #include "Direction.h"
+#include <conio.h>
+
 class UserRespone
 {
 public:
 
-	UserRespone(int response);
+	UserRespone();
 
 	bool IsValidResponse;
 	bool IsContinue;
 	Direction Dir;
-	int Response;
 
 private:
 	void CheckResponse();

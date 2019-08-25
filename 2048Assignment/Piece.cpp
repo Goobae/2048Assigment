@@ -83,8 +83,10 @@ Piece* Piece::GetAfter(int numIterations)
 
 			p = p->nextPiece;
 		}
+		// p = -3
 		else
 		{
+			//p =-3, direction = down, 
 			if (p->prevPiece == nullptr)
 			{
 				return this;

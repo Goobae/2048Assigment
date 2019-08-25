@@ -45,5 +45,5 @@ void Game::IsGameOver()
 
 UserRespone* Game::GetUserInputAndClean()
 {
-	return new UserRespone(_getch());	
+	return new UserRespone();	
 }

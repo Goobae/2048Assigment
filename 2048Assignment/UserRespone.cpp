@@ -1,8 +1,8 @@
 #include "UserRespone.h"
 
-UserRespone::UserRespone(int response)
+
+UserRespone::UserRespone()
 {
-	Response = response;
 	IsValidResponse = false;
 	IsContinue = true;
 	Dir = Unknown;
@@ -12,33 +12,33 @@ UserRespone::UserRespone(int response)
 
 void UserRespone::CheckResponse()
 {
-	switch (Response)
+	int ch = _getch();
+	if (ch == 0 || ch == 224)
 	{
-
-	case 65:
-		Dir = Up;
-		break;
-	case 66:
-		Dir = Down;
-		break;
-	case 67:
-		Dir = Right;
-		break;
-	case 68:
-		Dir = Left;
-		break;
-	default:
-		Dir = Unknown;
-		break;
+		switch (_getch())
+		{
+		case 72:
+			//up
+			Dir = Up;
+			break;
+		case 75:
+			//left
+			Dir = Left;
+			break;
+		case 77:
+			//right
+			Dir = Right;
+			break;
+		case 80:
+			//down
+			Dir = Down;
+			break;
+		}
 	}
 
 	if (Dir == Unknown)
 	{
 		IsValidResponse = false;
-	}
-	if (Response == 113 || Response == 81)
-	{
-		IsContinue = false;
 	}
 	else
 	{

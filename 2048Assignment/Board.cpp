@@ -163,37 +163,59 @@ void Board::ProcessRow(Direction dir)
 				[0, 3][1, 3][2, 3][3, 3]
 
 				[0, 0][1, 0][2, 0][3, 0][0, 1][1, 1][2, 1][3, 1][0, 2][1, 2][2, 2][3, 2][0, 3][1, 3][2, 3][3, 3]
-		*/
+	*/
 
-		//iterate through the board to do the processing
+	//iterate through the board to do the processing
 	vector<Piece*> toPorcess(boardSize);
 	int iterator = 0;
 	int tempScore = 0;
+
+
+	//prep the loop
+	if (dir == Right || dir == Down) {
+		curPiece = Pieces_front;
+
+		if (dir == Right)
+		{
+			nextPiece = Pieces_front->GetAfter(1);
+		}
+		else
+		{
+			nextPiece = Pieces_front->GetAfter(boardSize);
+		}
+	}
+	else
+	{
+		curPiece = Pieces_back;
+
+		if (dir == Left)
+		{
+			nextPiece = Pieces_back->GetAfter(-1);
+		}
+		else
+		{
+			nextPiece = Pieces_back->GetAfter(-boardSize);
+		}
+	}
+
 	do
 	{
-		//need to make sure we start with the  correct first piece/last piece
-		switch (dir)
+
+
+		if (curPiece->GetScore() > nextPiece->GetScore() || curPiece->GetScore() == 0)
 		{
-		case Left:
-			nextPiece = Pieces_front->GetAfter(boardSize - 1);
-			curPiece = Pieces_front->GetAfter(boardSize);
-			break;
-		case Up:
-			nextPiece = Pieces_back->GetAfter(-1);
-			curPiece = Pieces_back;
-			break;
-		case Right:
-			nextPiece = Pieces_front->GetAfter(1);
-			curPiece = Pieces_front;
-			break;
-		case Down:
-			nextPiece = Pieces_back->GetAfter(-boardSize + 1);
-			curPiece = Pieces_back->GetAfter(boardSize);
-			break;
-		default:
-			return;
-			break;
+
 		}
+		else if (curPiece->GetScore() < nextPiece->GetScore())
+		{
+
+		}
+		else
+		{
+			//curPiece.GetScore = nextPiece.GetScore
+
+		}
+
 
 		if (curPiece->GetScore() != 0)
 		{
@@ -210,6 +232,36 @@ void Board::ProcessRow(Direction dir)
 		{
 			ProcessGroup(toPorcess, tempScore - curPiece->GetScore());
 		}
+#pragma region nextPieceLogic
+
+		//need to make sure we start with the  correct first piece/last piece
+/*switch (dir)
+{
+case Left:
+	nextPiece = Pieces_front->GetAfter(boardSize - 1);
+	curPiece = Pieces_front->GetAfter(boardSize);
+
+	break;
+case Up:
+	nextPiece = Pieces_back->GetAfter(-1);
+	curPiece = Pieces_back;
+
+	break;
+case Right:
+	nextPiece = Pieces_front->GetAfter(1);
+	curPiece = Pieces_front;
+
+	break;
+case Down:
+	curPiece = Pieces_front;
+	nextPiece = Pieces_front->GetAfter(-boardSize + 1);
+
+	break;
+default:
+	return;
+	break;
+}*/
+#pragma endregion
 
 	} while (iterator < boardSize - 1);
 }
