@@ -82,18 +82,19 @@ Piece* Piece::GetAfter(int numIterations)
 			}
 
 			p = p->nextPiece;
+			numIterations--;
 		}
-		// p = -3
 		else
 		{
-			//p =-3, direction = down, 
 			if (p->prevPiece == nullptr)
 			{
 				return this;
 			}
+
 			p = p->prevPiece;
+			numIterations++;
 		}
-		numIterations--;
+		
 	} while (numIterations > 0 || numIterations < 0);
 
 	return p;

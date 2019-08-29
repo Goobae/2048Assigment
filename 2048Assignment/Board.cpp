@@ -135,23 +135,24 @@ void Board::GenerateBoard()
 		x++;
 	}
 
-	temp = Pieces_front;
+	Pieces_back = temp;
+	//temp = Pieces_front;
 
-	do
-	{
-		if (Pieces_back == nullptr)
-		{
-			prev_piece;
-		}
-		temp = temp->nextPiece;
+	//do
+	//{
+	//	if (Pieces_back == nullptr)
+	//	{
+	//		prev_piece;
+	//	}
+	//	temp = temp->nextPiece;
 
-	} while (temp != nullptr);
+	//} while (temp != nullptr);
 }
 
 void Board::ProcessRow(Direction dir)
 {
-	Piece* curPiece;
-	Piece* nextPiece;
+	Piece* curPiece = Pieces_front;
+	Piece* nextPiece = Pieces_front;
 
 	int curPieceGetAfter = 0;
 	int nextPieceGetAfter = 0;
@@ -166,104 +167,95 @@ void Board::ProcessRow(Direction dir)
 	*/
 
 	//iterate through the board to do the processing
-	vector<Piece*> toPorcess(boardSize);
 	int iterator = 0;
+	int outerIter = 0;
 	int tempScore = 0;
 
 
-	//prep the loop
-	if (dir == Right || dir == Down) {
-		curPiece = Pieces_front;
-
-		if (dir == Right)
-		{
-			nextPiece = Pieces_front->GetAfter(1);
-		}
-		else
-		{
-			nextPiece = Pieces_front->GetAfter(boardSize);
-		}
-	}
-	else
+	//prep the loop. start opposite of the swipe.
+	switch (dir)
 	{
+	case Left:
+		nextPiece = Pieces_front->GetAfter(1);
+		curPiece = Pieces_front;
+		break;
+	case Up:
+		nextPiece = Pieces_front->GetAfter(boardSize - 1);
+		curPiece = Pieces_front;
+		break;
+	case Right:
+		//returns this
+		nextPiece = Pieces_back->GetAfter(-1);
 		curPiece = Pieces_back;
+		break;
+	case Down:
+		nextPiece = Pieces_back->GetAfter(-boardSize + 1);
+		curPiece = Pieces_back;
+		break;
 
-		if (dir == Left)
-		{
-			nextPiece = Pieces_back->GetAfter(-1);
-		}
-		else
-		{
-			nextPiece = Pieces_back->GetAfter(-boardSize);
-		}
 	}
+
+
 
 	do
 	{
-
-
-		if (curPiece->GetScore() > nextPiece->GetScore() || curPiece->GetScore() == 0)
+		do
 		{
+			if (curPiece->GetScore() == 0)
+			{//iterator == 2, nextPice = null
+				curPiece->SetScore(nextPiece->GetScore());
+				nextPiece->SetScore(0);
+			}
+			else if (ProcessNumber(curPiece->GetScore() + nextPiece->GetScore()))
+			{
+				curPiece->SetScore(curPiece->GetScore() * 2);
+				nextPiece->SetScore(0);
+			}
+			//else check if any valid moves exist??
 
-		}
-		else if (curPiece->GetScore() < nextPiece->GetScore())
+			curPiece = nextPiece;
+			switch (dir)
+			{
+			case Left:
+				nextPiece = nextPiece->nextPiece;
+			case Up:
+				nextPiece = nextPiece->GetAfter(boardSize - 1);
+				break;
+			case Right:
+				nextPiece = nextPiece->prevPiece;
+				break;
+			case Down:
+				nextPiece = nextPiece->GetAfter(-boardSize + 1);
+				break;
+			}
+
+			iterator++;
+
+		} while (iterator < boardSize - 1);
+
+		/*switch (dir)
 		{
+		case Left:
+			curPiece = curPiece->GetAfter(1);
+			curPiece = Pieces_front;
+			break;
+		case Up:
+			nextPiece = Pieces_front->GetAfter(boardSize - 1);
+			curPiece = Pieces_front;
+			break;
+		case Right:
+			nextPiece = Pieces_back->GetAfter(-1);
+			curPiece = Pieces_back;
+			break;
+		case Down:
+			nextPiece = Pieces_back->GetAfter(-boardSize + 1);
+			curPiece = Pieces_back;
+			break;
 
-		}
-		else
-		{
-			//curPiece.GetScore = nextPiece.GetScore
+		}*/
+		outerIter++;
 
-		}
-
-
-		if (curPiece->GetScore() != 0)
-		{
-			tempScore = curPiece->GetScore();
-		}
-
-		if (ProcessNumber(curPiece->GetScore() + nextPiece->GetScore()) 
-			|| nextPiece->GetScore() == tempScore
-			|| nextPiece->GetScore() == 0)
-		{
-			toPorcess.push_back(curPiece);
-		}
-		else
-		{
-			ProcessGroup(toPorcess, tempScore - curPiece->GetScore());
-		}
-#pragma region nextPieceLogic
-
-		//need to make sure we start with the  correct first piece/last piece
-/*switch (dir)
-{
-case Left:
-	nextPiece = Pieces_front->GetAfter(boardSize - 1);
-	curPiece = Pieces_front->GetAfter(boardSize);
-
-	break;
-case Up:
-	nextPiece = Pieces_back->GetAfter(-1);
-	curPiece = Pieces_back;
-
-	break;
-case Right:
-	nextPiece = Pieces_front->GetAfter(1);
-	curPiece = Pieces_front;
-
-	break;
-case Down:
-	curPiece = Pieces_front;
-	nextPiece = Pieces_front->GetAfter(-boardSize + 1);
-
-	break;
-default:
-	return;
-	break;
-}*/
-#pragma endregion
-
-	} while (iterator < boardSize - 1);
+	} while (outerIter < boardSize - 1);
 }
 
 void Board::ProcessGroup(vector<Piece*> toProcess, int totalScore)

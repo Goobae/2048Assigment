@@ -26,3 +26,5 @@ private:
 	UserRespone* GetUserInputAndClean();
 };
 
+		
+
