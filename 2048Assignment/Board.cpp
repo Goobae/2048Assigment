@@ -21,8 +21,19 @@ void Board::SetRandomScores()
 	/* generate secret number between 1 and 10: */
 	do
 	{
-		int x = rand() % boardSize;
-		int y = rand() % boardSize;
+		int x, y;
+		if (iter == 0)
+		{
+			x = 2;
+			y = 2;
+		}
+		else
+		{
+			x = 2;
+			y = 1;
+		}
+		//int x = rand() % boardSize;
+		//int y = rand() % boardSize;
 
 		Piece* p = GetPiece(x, y);
 		p->SetScore(2);
@@ -169,42 +180,45 @@ void Board::ProcessRow(Direction dir)
 	//iterate through the board to do the processing
 	int iterator = 0;
 	int outerIter = 0;
-	int tempScore = 0;
-
 
 	//prep the loop. start opposite of the swipe.
 	switch (dir)
 	{
-	case Left:
+	case Right:
 		nextPiece = Pieces_front->GetAfter(1);
 		curPiece = Pieces_front;
 		break;
-	case Up:
+	case Down:
 		nextPiece = Pieces_front->GetAfter(boardSize - 1);
 		curPiece = Pieces_front;
 		break;
-	case Right:
+	case Left:
 		//returns this
 		nextPiece = Pieces_back->GetAfter(-1);
 		curPiece = Pieces_back;
 		break;
-	case Down:
-		nextPiece = Pieces_back->GetAfter(-boardSize + 1);
+	case Up:
+		nextPiece = Pieces_back->GetAfter(-boardSize);
 		curPiece = Pieces_back;
 		break;
 
 	}
-
-
-
+	   
 	do
 	{
+		iterator = 0;
 		do
 		{
-			if (curPiece->GetScore() == 0)
-			{//iterator == 2, nextPice = null
-				curPiece->SetScore(nextPiece->GetScore());
-				nextPiece->SetScore(0);
+			if (curPiece == nextPiece)
+			{
+				break;
+			}
+
+			if (nextPiece->GetScore() == 0)
+			{
+				nextPiece->SetScore(curPiece->GetScore());
+				curPiece->SetScore(0);
+				continue;
 			}
 			else if (ProcessNumber(curPiece->GetScore() + nextPiece->GetScore()))
 			{
@@ -216,16 +230,16 @@ void Board::ProcessRow(Direction dir)
 			curPiece = nextPiece;
 			switch (dir)
 			{
-			case Left:
-				nextPiece = nextPiece->nextPiece;
-			case Up:
-				nextPiece = nextPiece->GetAfter(boardSize - 1);
-				break;
 			case Right:
+				nextPiece = nextPiece->nextPiece;
+			case Down:
+				nextPiece = nextPiece->GetAfter(boardSize);
+				break;
+			case Left:
 				nextPiece = nextPiece->prevPiece;
 				break;
-			case Down:
-				nextPiece = nextPiece->GetAfter(-boardSize + 1);
+			case Up:
+				nextPiece = nextPiece->GetAfter(-boardSize);
 				break;
 			}
 
@@ -233,28 +247,27 @@ void Board::ProcessRow(Direction dir)
 
 		} while (iterator < boardSize - 1);
 
-		/*switch (dir)
+		switch (dir)
 		{
-		case Left:
-			curPiece = curPiece->GetAfter(1);
-			curPiece = Pieces_front;
-			break;
-		case Up:
-			nextPiece = Pieces_front->GetAfter(boardSize - 1);
-			curPiece = Pieces_front;
-			break;
 		case Right:
-			nextPiece = Pieces_back->GetAfter(-1);
-			curPiece = Pieces_back;
+			curPiece = curPiece->GetAfter(outerIter + 1);
+			nextPiece = curPiece->GetAfter(1);
 			break;
 		case Down:
-			nextPiece = Pieces_back->GetAfter(-boardSize + 1);
-			curPiece = Pieces_back;
+			curPiece = Pieces_front->GetAfter(outerIter + 1);
+			nextPiece = curPiece->GetAfter(boardSize - 1);
 			break;
-
-		}*/
+		case Left:
+			curPiece = Pieces_back->GetAfter(-boardSize + 1);
+			nextPiece = curPiece->GetAfter(-outerIter - 1);
+			break;
+		case Up:
+			curPiece = Pieces_back->GetAfter(-outerIter -1);
+			nextPiece = curPiece->GetAfter(-boardSize);
+			break;
+		}
+		
 		outerIter++;
-
 	} while (outerIter < boardSize - 1);
 }
 
