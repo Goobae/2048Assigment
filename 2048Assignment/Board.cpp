@@ -14,6 +14,17 @@ Board::~Board()
 
 }
 
+/*
+	Left To do:
+	-find better way to pick piece to set next score
+	-make sure when 2 2 2 it goes to 4 2 not 2 4
+	-track when a game is to end
+	-make the numbers nicer to read
+
+
+
+*/
+
 void Board::SetRandomScores()
 {
 	SetNextRandomPiece();
