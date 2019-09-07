@@ -27,8 +27,16 @@ Board::~Board()
 
 void Board::SetRandomScores()
 {
-	SetNextRandomPiece();
-	SetNextRandomPiece();
+	Piece* p = GetPiece(0, 3);
+	p->SetScore(2);
+
+	p = GetPiece(1, 3);
+	p->SetScore(2);
+
+	p = GetPiece(2, 3);
+	p->SetScore(2);
+	//SetNextRandomPiece();
+	//SetNextRandomPiece();
 	///* initialize random seed: */
 	//srand(time(NULL));
 
