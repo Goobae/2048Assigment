@@ -20,6 +20,7 @@ public:
 	void DrawCoordinates();
 	void DrawScores();
 	void Swipe(Direction direction);
+	void Undo();
 
 	
 	void GenerateBoard();

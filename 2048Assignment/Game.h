@@ -18,9 +18,9 @@ public:
 	void Play();
 private:
 	void DrawGame();
-	void IsGameOver();
+	void GameOver();
+	void ClearScreen();
 
-	bool isGameOver;
 	Board* board;
 
 	UserRespone* GetUserInputAndClean();

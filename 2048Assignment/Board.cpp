@@ -141,6 +141,19 @@ void Board::Swipe(Direction direction)
 	SetNextRandomPiece();
 }
 
+void Board::Undo()
+{
+	Piece* p = Pieces_front;
+
+	do
+	{
+		p->UndoScore();
+
+		p = p->nextPiece;
+
+	} while (p->nextPiece != nullptr);
+}
+
 void Board::GenerateBoard()
 {
 	int y = 0;
