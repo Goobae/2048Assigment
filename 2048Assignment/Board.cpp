@@ -315,19 +315,23 @@ void Board::ProcessRow(Direction dir)
 
 void Board::SetNextRandomPiece()
 {
-	bool isSet = false;
-
-	while (!isSet)
+	Piece* p = Pieces_front;
+	vector<Piece*> emptyPieces;
+	
+	do
 	{
-		srand(time(NULL));
-
-		Piece* t = GetPiece(rand() % boardSize, rand() % boardSize);
-		if (t->GetScore() == 0)
+		if (p->GetScore() == 0)
 		{
-			t->SetScore(smallestNumer);
-			isSet = true;
+			emptyPieces.push_back(p);
 		}
-	}
+
+		p = p->nextPiece;
+
+	} while (p->nextPiece != nullptr);
+
+
+	srand(time(NULL));
+	emptyPieces.at(rand() % emptyPieces.size())->SetScore(smallestNumer);
 }
 
 bool Board::ProcessNumber(int num)

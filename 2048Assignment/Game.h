@@ -19,7 +19,7 @@ public:
 private:
 	void DrawGame();
 	void GameOver();
-	void ClearScreen();
+	void ClearScreen(); 
 
 	Board* board;
 
