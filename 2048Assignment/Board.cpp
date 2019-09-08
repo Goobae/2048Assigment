@@ -6,7 +6,10 @@ Board::Board()
 	Pieces_front = NULL;
 	Pieces_back = NULL;
 	boardSize = 4;
-	smallestNumer = 2;
+	totalPieces = boardSize * boardSize;
+	smallestNumber = 2;
+	biggestNumber = smallestNumber;
+	noMoreMoves = false;
 }
 
 Board::~Board()
@@ -16,9 +19,7 @@ Board::~Board()
 
 /*
 	Left To do:
-	-find better way to pick piece to set next score
 	-make sure when 2 2 2 it goes to 4 2 not 2 4
-	-track when a game is to end
 	-make the numbers nicer to read
 
 
@@ -131,13 +132,20 @@ void Board::DrawScores()
 	} while (temp != nullptr);
 }
 
+int Board::GetScore()
+{
+	return biggestNumber;
+}
+
 void Board::Swipe(Direction direction)
 {
 	if (direction != Unknown)
 	{
-		ProcessRow(direction);
+		RemoveBlockingZeros(direction);
+		//ProcessRow(direction);
 	}
 
+	SetScores();
 	SetNextRandomPiece();
 }
 
@@ -152,6 +160,11 @@ void Board::Undo()
 		p = p->nextPiece;
 
 	} while (p->nextPiece != nullptr);
+}
+
+bool Board::NoMoreMoves()
+{
+	return noMoreMoves;
 }
 
 void Board::GenerateBoard()
@@ -313,6 +326,99 @@ void Board::ProcessRow(Direction dir)
 	} while (outerIter < boardSize);
 }
 
+void Board::RemoveBlockingZeros(Direction dir)
+{
+	//need to start opposite of the swipe
+	Piece* curPiece = dir == Right || dir == Down ? Pieces_back: Pieces_front;
+	Piece* nextPiece = GetNextPiece(curPiece, GetOppoDir(dir));
+
+	do
+	{
+		if (curPiece->GetScore() == 0)
+		{
+			curPiece->SetScore(nextPiece->GetScore());
+			nextPiece->SetScore(0);
+		}
+		
+		curPiece = nextPiece;
+		nextPiece = GetNextPiece(curPiece, GetOppoDir(dir));
+	} while (nextPiece != nullptr);
+}
+
+void Board::SetScores()
+{
+	int curSmall = 2;
+	int curLarge = 0;
+
+	Piece* p = Pieces_front;
+	do
+	{
+		if (p->GetScore() != 0 && p->GetScore() < curSmall)
+		{
+			curSmall = p->GetScore();
+		}
+
+		if (p->GetScore() > curLarge)
+		{
+			curLarge = p->GetScore();
+		}
+		p = p->nextPiece;
+
+	} while (p != nullptr);
+
+	smallestNumber = curSmall;
+	biggestNumber = curLarge;
+}
+
+Piece* Board::GetNextPiece(Piece* curPiece, Direction dir)
+{
+	switch (dir)
+	{
+	case Right:
+		if (curPiece->GetId() + 1 >= totalPieces)
+			return nullptr;
+		else
+			return curPiece->GetAfter(1);
+		break;
+	case Down:
+		if (curPiece->GetId() + boardSize >= totalPieces)
+			return nullptr;
+		else
+			return curPiece->GetAfter(boardSize);
+		break;
+	case Left:
+		if (curPiece->GetId() - 1 <= 0)
+			return nullptr;
+		else
+			return curPiece->GetAfter(-1);
+		break;
+	case Up:
+		if (curPiece->GetId() - boardSize <= 0)
+			return nullptr;
+		else
+			return curPiece->GetAfter(-boardSize);
+		break;
+	}
+	return nullptr;
+}
+
+Direction Board::GetOppoDir(Direction dir)
+{
+	switch (dir)
+	{
+	case Left:
+		return Right;
+	case Up:
+		return Down;
+	case Right:
+		return Left;
+	case Down:
+		return Up;
+	case Unknown:
+		return dir;
+	}
+}
+
 void Board::SetNextRandomPiece()
 {
 	Piece* p = Pieces_front;
@@ -329,9 +435,14 @@ void Board::SetNextRandomPiece()
 
 	} while (p->nextPiece != nullptr);
 
-
-	srand(time(NULL));
-	emptyPieces.at(rand() % emptyPieces.size())->SetScore(smallestNumer);
+	if (emptyPieces.size() == 0) {
+		noMoreMoves = true;
+	}
+	else
+	{
+		srand(time(NULL));
+		emptyPieces.at(rand() % emptyPieces.size())->SetScore(smallestNumber);
+	}
 }
 
 bool Board::ProcessNumber(int num)

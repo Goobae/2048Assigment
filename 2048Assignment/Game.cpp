@@ -32,7 +32,7 @@ void Game::Play()
 			
 			DrawGame();
 		
-	} while (input->IsContinue);
+	} while (input->IsContinue && !board->NoMoreMoves());
 
 	GameOver();
 }
@@ -52,6 +52,8 @@ void Game::GameOver()
 	ClearScreen();
 
 	puts("The Game Has Ended!");
+	//need a better way for htis
+	puts("Your score was: " + board->GetScore());
 }
 
 void Game::ClearScreen()

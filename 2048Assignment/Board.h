@@ -20,21 +20,30 @@ public:
 
 	void DrawCoordinates();
 	void DrawScores();
+	int GetScore();
 	void Swipe(Direction direction);
 	void Undo();
-
+	bool NoMoreMoves();
 	
 	void GenerateBoard();
 
 private:
 	int boardSize;
+	int totalPieces;
 
-	int smallestNumer;
+	int smallestNumber;
+	int biggestNumber;
+
+	bool noMoreMoves;
 
 	Piece* Pieces_front;
 	Piece* Pieces_back;
 
 	void ProcessRow(Direction dir);
+	void RemoveBlockingZeros(Direction dir);
+	void SetScores();
+	Piece* GetNextPiece(Piece* curPiece, Direction dir);
+	Direction GetOppoDir(Direction dir);
 	void SetNextRandomPiece();
 	bool ProcessNumber(int num);
 };
