@@ -3,8 +3,8 @@
 
 UserRespone::UserRespone()
 {
-	IsValidResponse = false;
 	IsContinue = true;
+	IsUndo = false;
 	Dir = Unknown;
 
 	CheckResponse();
@@ -13,6 +13,7 @@ UserRespone::UserRespone()
 void UserRespone::CheckResponse()
 {
 	int ch = _getch();
+
 	if (ch == 0 || ch == 224)
 	{
 		switch (_getch())
@@ -35,13 +36,16 @@ void UserRespone::CheckResponse()
 			break;
 		}
 	}
+	else if (ch == 117)
+	{
+		// b key
+		IsUndo = true;
+	}
+	else if (ch == 120)
+	{
+		// x key
+		IsContinue = false;
+	}
 
-	if (Dir == Unknown)
-	{
-		IsValidResponse = false;
-	}
-	else
-	{
-		IsContinue = true;
-	}
+	//the rest are the other keys, we alreayd have IsContinue set to true
 }

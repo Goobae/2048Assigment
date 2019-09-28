@@ -8,8 +8,8 @@ public:
 
 	UserRespone();
 
-	bool IsValidResponse;
 	bool IsContinue;
+	bool IsUndo;
 	Direction Dir;
 
 private:

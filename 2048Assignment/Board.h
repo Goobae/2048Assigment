@@ -4,6 +4,7 @@
 #include <iostream>
 #include <time.h>     
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -20,6 +21,7 @@ public:
 	void DrawCoordinates();
 	void DrawScores();
 	void Swipe(Direction direction);
+	void Undo();
 
 	
 	void GenerateBoard();

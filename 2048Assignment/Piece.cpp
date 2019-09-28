@@ -3,10 +3,6 @@
 
 Piece::Piece()
 {
-	//eastPiece = nullptr;
-	//northPiece = nullptr;
-	//westPiece = nullptr;
-	//southPiece = nullptr;
 	prevPiece = nullptr;
 	nextPiece = nullptr;
 
@@ -14,6 +10,7 @@ Piece::Piece()
 
 	X =_x = 0;
 	Y =_y = 0;
+	_id = 0;
 }
 
 Piece::Piece(int x, int y)
@@ -25,11 +22,12 @@ Piece::Piece(int x, int y)
 
 	X = _x = x;
 	Y = _y = y;
+	_id = 0;
 }
 
 Piece::~Piece()
 {
-	/*eastPiece = northPiece = westPiece = southPiece = nullptr;*/
+	
 }
 
 int Piece::GetScore()
@@ -45,6 +43,7 @@ int Piece::GetId()
 
 void Piece::SetScore(int score)
 {
+	_prevScores.push(currentScore);
 	currentScore = score;
 }
 
@@ -60,8 +59,16 @@ void Piece::DrawScore()
 
 void Piece::DrawCoordinates()
 {
-	//string out =;
 	cout << "[" << _x << "," << _y << "]";
+}
+
+void Piece::UndoScore()
+{
+	if (!_prevScores.empty())
+	{
+		currentScore = _prevScores.top();
+		_prevScores.pop();
+	}
 }
 
 Piece* Piece::GetAfter(int numIterations)
@@ -99,22 +106,3 @@ Piece* Piece::GetAfter(int numIterations)
 
 	return p;
 }
-//
-//void Piece::Swipe(Direction direction)
-//{
-//	Piece* temp;
-//
-//	if (direction == East && eastPiece != 0)
-//		temp = eastPiece;
-//	else if (direction == North && northPiece != 0)
-//		temp = eastPiece;
-//	else if (direction == West && westPiece != 0)
-//		temp = eastPiece;
-//	else if (direction == South && southPiece != 0)
-//		temp = eastPiece;
-//	else
-//		return;
-//
-//	if(temp ->currentScore == currentScore)
-//		temp-> currentScore += currentScore;
-//}

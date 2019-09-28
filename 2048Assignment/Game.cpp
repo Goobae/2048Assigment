@@ -21,17 +21,25 @@ void Game::Play()
 	DrawGame();
 	do {
 			input = GetUserInputAndClean();
-			board->Swipe(input->Dir);
+			if (input->IsUndo)
+			{
+				board->Undo();
+			}
+			else if (input->Dir != Unknown)
+			{
+				board->Swipe(input->Dir);
+			}
+			
 			DrawGame();
 		
-	} while (input->IsValidResponse || input->IsContinue);
+	} while (input->IsContinue);
 
-	puts("The Game Has Ended!");
+	GameOver();
 }
 
 void Game::DrawGame()
 {
-	system("CLS");
+	ClearScreen();
 
 	if (board != nullptr)
 	{
@@ -39,8 +47,16 @@ void Game::DrawGame()
 	}
 }
 
-void Game::IsGameOver()
+void Game::GameOver()
 {
+	ClearScreen();
+
+	puts("The Game Has Ended!");
+}
+
+void Game::ClearScreen()
+{
+	system("CLS");
 }
 
 UserRespone* Game::GetUserInputAndClean()

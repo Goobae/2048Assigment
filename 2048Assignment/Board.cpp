@@ -14,10 +14,29 @@ Board::~Board()
 
 }
 
+/*
+	Left To do:
+	-find better way to pick piece to set next score
+	-make sure when 2 2 2 it goes to 4 2 not 2 4
+	-track when a game is to end
+	-make the numbers nicer to read
+
+
+
+*/
+
 void Board::SetRandomScores()
 {
-	SetNextRandomPiece();
-	SetNextRandomPiece();
+	Piece* p = GetPiece(0, 3);
+	p->SetScore(2);
+
+	p = GetPiece(1, 3);
+	p->SetScore(2);
+
+	p = GetPiece(2, 3);
+	p->SetScore(2);
+	//SetNextRandomPiece();
+	//SetNextRandomPiece();
 	///* initialize random seed: */
 	//srand(time(NULL));
 
@@ -120,6 +139,19 @@ void Board::Swipe(Direction direction)
 	}
 
 	SetNextRandomPiece();
+}
+
+void Board::Undo()
+{
+	Piece* p = Pieces_front;
+
+	do
+	{
+		p->UndoScore();
+
+		p = p->nextPiece;
+
+	} while (p->nextPiece != nullptr);
 }
 
 void Board::GenerateBoard()
@@ -283,19 +315,23 @@ void Board::ProcessRow(Direction dir)
 
 void Board::SetNextRandomPiece()
 {
-	bool isSet = false;
-
-	while (!isSet)
+	Piece* p = Pieces_front;
+	vector<Piece*> emptyPieces;
+	
+	do
 	{
-		srand(time(NULL));
-
-		Piece* t = GetPiece(rand() % boardSize, rand() % boardSize);
-		if (t->GetScore() == 0)
+		if (p->GetScore() == 0)
 		{
-			t->SetScore(smallestNumer);
-			isSet = true;
+			emptyPieces.push_back(p);
 		}
-	}
+
+		p = p->nextPiece;
+
+	} while (p->nextPiece != nullptr);
+
+
+	srand(time(NULL));
+	emptyPieces.at(rand() % emptyPieces.size())->SetScore(smallestNumer);
 }
 
 bool Board::ProcessNumber(int num)
