@@ -27,6 +27,8 @@ public:
 	
 	void GenerateBoard();
 
+	void Test(Piece* p);
+	void loopAll(void (*f)(Piece*), int start = 0);
 private:
 	int boardSize;
 	int totalPieces;
@@ -46,6 +48,8 @@ private:
 	Direction GetOppoDir(Direction dir);
 	void SetNextRandomPiece();
 	bool ProcessNumber(int num);
+
+	
 };
 
 

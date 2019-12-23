@@ -71,6 +71,31 @@ void Piece::UndoScore()
 	}
 }
 
+Piece* Piece::GetNext(Direction dir, int boardSize)
+{
+	Piece* p = this;
+
+	switch (dir)
+	{
+	case Left:
+		return p->GetAfter(-1);
+		break;
+	case Up:
+		return p->GetAfter(-boardSize);
+		break;
+	case Right:
+		return p->GetAfter(1);
+		break;
+	case Down:
+		return p->GetAfter(boardSize);
+		break;
+	case Unknown:
+	default:
+		return nullptr;
+		break;
+	}
+}
+
 Piece* Piece::GetAfter(int numIterations)
 {
 	if (numIterations == 0)

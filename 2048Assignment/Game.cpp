@@ -37,6 +37,11 @@ void Game::Play()
 	GameOver();
 }
 
+void Game::TestFunc()
+{
+	//board->loopAll(&board->Test);
+}
+
 void Game::DrawGame()
 {
 	ClearScreen();
@@ -62,6 +67,6 @@ void Game::ClearScreen()
 }
 
 UserRespone* Game::GetUserInputAndClean()
-{
+{  
 	return new UserRespone();	
 }

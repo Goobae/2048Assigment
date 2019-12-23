@@ -211,6 +211,11 @@ void Board::GenerateBoard()
 	//} while (temp != nullptr);
 }
 
+void Board::Test(Piece* p)
+{
+	p->SetScore(100);
+}
+
 void Board::ProcessRow(Direction dir)
 {
 	Piece* curPiece = Pieces_front;
@@ -331,18 +336,28 @@ void Board::RemoveBlockingZeros(Direction dir)
 	//need to start opposite of the swipe
 	Piece* curPiece = dir == Right || dir == Down ? Pieces_back: Pieces_front;
 	Piece* nextPiece = GetNextPiece(curPiece, GetOppoDir(dir));
-
+	Piece* startPiece = curPiece;
+	Direction traversalDir = dir == Right || dir == Down ? Up : Down;
+	
 	do
 	{
-		if (curPiece->GetScore() == 0)
+		do
 		{
-			curPiece->SetScore(nextPiece->GetScore());
-			nextPiece->SetScore(0);
-		}
-		
-		curPiece = nextPiece;
+			if (curPiece->GetScore() == 0)
+			{
+				curPiece->SetScore(nextPiece->GetScore());
+				nextPiece->SetScore(0);
+			}
+
+			curPiece = nextPiece;
+			nextPiece = GetNextPiece(curPiece, GetOppoDir(dir));
+		} while (nextPiece != nullptr);
+
+		curPiece = GetNextPiece(startPiece, traversalDir);
 		nextPiece = GetNextPiece(curPiece, GetOppoDir(dir));
-	} while (nextPiece != nullptr);
+		startPiece = curPiece;
+
+	} while (curPiece != nullptr);
 }
 
 void Board::SetScores()
@@ -372,6 +387,12 @@ void Board::SetScores()
 
 Piece* Board::GetNextPiece(Piece* curPiece, Direction dir)
 {
+	//test to see if it is an edge piece
+	if (curPiece == nullptr || curPiece->GetId() % boardSize == 0) 
+	{
+		return nullptr;
+	}
+
 	switch (dir)
 	{
 	case Right:
@@ -453,4 +474,24 @@ bool Board::ProcessNumber(int num)
 	}
 
 	return false;
+}
+
+void Board::loopAll(void(*f)(Piece*), int start)
+{
+	//need to start opposite of the swipe
+	Piece* curPiece = Pieces_front;
+	Piece* nextPiece = Pieces_front->nextPiece;
+
+	int iter = 0;
+	do
+	{
+		if (iter >= start)
+		{
+			f(curPiece);
+		}		
+
+		curPiece = nextPiece;
+		nextPiece = nextPiece->nextPiece;
+
+	} while (nextPiece != nullptr);
 }

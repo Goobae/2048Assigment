@@ -9,8 +9,10 @@
 	int main() {
 
 		Game* game = new Game();
+
 		game->Initialize();
 		game->Play();
+		//game->TestFunc();
 
 		char* a = new char('a');
 		cin.read(a, 1);
