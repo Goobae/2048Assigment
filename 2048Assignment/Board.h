@@ -16,7 +16,7 @@ public:
 
 	void SetRandomScores();
 
-	Piece* GetPiece(int x, int y);
+	Piece* GetPiece(int x, int y); 
 
 	void DrawCoordinates();
 	void DrawScores();
