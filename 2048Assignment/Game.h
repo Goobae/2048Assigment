@@ -18,6 +18,8 @@ public:
 
 	void Initialize();
 	void Play();
+
+	void TestFunc();
 private:
 	void DrawGame();
 	void GameOver();

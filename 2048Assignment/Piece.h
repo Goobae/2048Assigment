@@ -23,12 +23,13 @@ public:
 	void DrawCoordinates();
 	void UndoScore();
 
-	Piece* GetAfter(int numIterations);
+	Piece* GetNext(Direction dir, int boardSize);
 	
 	Piece* nextPiece;
 	Piece* prevPiece;
 
 private:
+	Piece* GetAfter(int numIterations);
 	int currentScore;
 	int _x;
 	int _y;
