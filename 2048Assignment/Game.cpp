@@ -17,19 +17,23 @@ void Game::Initialize()
 
 void Game::Play()
 {
-	UserRespone* input;
+	UserResponse* input;
 	DrawGame();
 	do {
 			input = GetUserInputAndClean();
-			if (input->IsUndo)
+			if (input->ResponseType == IsUndo)
 			{
 				board->Undo();
 			}
-			else if (input->Dir != Unknown)
+			else if (input->ResponseType == IsTest)
+			{
+				Test();
+			}
+			else if (input->Dir == IsMove)
 			{
 				board->Swipe(input->Dir);
 			}
-			
+						
 			DrawGame();
 		
 	} while (input->IsContinue);
@@ -59,7 +63,12 @@ void Game::ClearScreen()
 	system("CLS");
 }
 
-UserRespone* Game::GetUserInputAndClean()
+void Game::Test()
 {
-	return new UserRespone();	
+	board->Test();
+}
+
+UserResponse* Game::GetUserInputAndClean()
+{
+	return new UserResponse();	
 }

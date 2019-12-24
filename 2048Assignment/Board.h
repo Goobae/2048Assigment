@@ -5,8 +5,10 @@
 #include <time.h>     
 #include <string>
 #include <vector>
+#include <functional>
 
-using namespace std;
+
+using namespace std::placeholders;
 
 class Board
 {
@@ -22,7 +24,9 @@ public:
 	void DrawScores();
 	void Swipe(Direction direction);
 	void Undo();
-
+	void Test();
+	void Test2();
+	void GoThroughRows(std::function<void()> func);
 	
 	void GenerateBoard();
 
@@ -44,7 +48,19 @@ private:
 
 
 
+/* we need to work on the following items:
+	-Make sure we correctly handle moving numbers over if there are zeros
+		-create code in ProcessRow
+		-debug
+-correctly handle seeing if there are any moves left
+	-Check to see if a piece next to it can handle the number
+		-create a function in process row that checks if current piece != next piece
+		-debug
+	-Validate the baord to see if it has any moves left
+		-process row
+		-test
 
+*/
 
 
 

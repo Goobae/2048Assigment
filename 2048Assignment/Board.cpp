@@ -145,13 +145,33 @@ void Board::Undo()
 {
 	Piece* p = Pieces_front;
 
-	do
+	do 
 	{
 		p->UndoScore();
 
 		p = p->nextPiece;
 
 	} while (p->nextPiece != nullptr);
+}
+
+void Board::Test()
+{
+	
+	Board b;
+	b.GoThroughRows(std::bind(&Board::Test2, b));
+}
+
+void Board::Test2()
+{
+	cout << "a";
+}
+
+void Board::GoThroughRows(std::function<void()> func)//FrontTraverse
+{
+	for (int i = 0; i < boardSize * boardSize; i++)
+	{
+		func();
+	}
 }
 
 void Board::GenerateBoard()
@@ -331,6 +351,12 @@ void Board::SetNextRandomPiece()
 
 
 	srand(time(NULL));
+
+	if (emptyPieces.size() == 0)
+	{
+		return;
+	}
+
 	emptyPieces.at(rand() % emptyPieces.size())->SetScore(smallestNumer);
 }
 

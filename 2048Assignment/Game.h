@@ -4,7 +4,9 @@
 #include <conio.h>
 #include <iostream>
 #include <stdlib.h>
-#include "UserRespone.h"
+#include "UserResponse.h"
+#include "ResponseType.h"
+#include "Game.h"
 
 using namespace std;
 
@@ -20,10 +22,11 @@ private:
 	void DrawGame();
 	void GameOver();
 	void ClearScreen(); 
+	void Test();
 
 	Board* board;
 
-	UserRespone* GetUserInputAndClean();
+	UserResponse* GetUserInputAndClean();
 };
 
 		
