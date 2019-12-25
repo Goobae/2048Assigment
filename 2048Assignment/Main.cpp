@@ -1,21 +1,17 @@
 #include <iostream>
 #include <string>
 
-#include "GReturn.h"
 #include "Board.h"
 #include "Game.h"
 
-	int main() {
+int main() {
 
-		Game* game = new Game();
+	Game* game = new Game();
 
-		game->Initialize();
-		game->Play();
-		//game->TestFunc();
+	game->Initialize();
+	game->Play();
 
-		char* a = new char('a');
-		cin.read(a, 1);
-		return 0;
-
-	}
-
+	char* a = new char('a');
+	cin.read(a, 1);
+	return 0;
+}

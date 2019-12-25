@@ -2,80 +2,69 @@
 
 Game::Game()
 {
-	board = new Board();
+	_board = new Board();
 }
 
 Game::~Game()
 {
-}
-
-void Game::Initialize()
-{
-	board->GenerateBoard();
-	board->SetRandomScores();
+	_board = nullptr;
 }
 
 void Game::Play()
 {
 	UserResponse* input;
-	DrawGame();
+	_DrawGame();
 	do {
-			input = GetUserInputAndClean();
-			if (input->ResponseType == IsUndo)
-			{
-				board->Undo();
-			}
-			else if (input->ResponseType == IsTest)
-			{
-				Test();
-			}
-			else if (input->ResponseType == IsMove)
-			{
-				board->Swipe(input->Dir);
-			}
-						
-			DrawGame();
-		
-	} while (input->IsContinue && !board->NoMoreMoves());
+		input = _GetUserInputAndClean();
+		if (input->ResponseType == IsUndo)
+		{
+			_board->Undo();
+		}
+		else if (input->ResponseType == IsTest)
+		{
+		}
+		else if (input->ResponseType == IsMove)
+		{
+			_board->Swipe(input->Dir);
+		}
 
-	GameOver();
+		_DrawGame();
+
+	} while (input->IsContinue && !_board->NoMoreMoves());
+
+	_GameOver();
 }
 
-void Game::TestFunc()
+void Game::Initialize()
 {
-	//board->loopAll(&board->Test);
+	_board->GenerateBoard();
+	_board->SetRandomScores();
 }
 
-void Game::DrawGame()
-{
-	ClearScreen();
-
-	if (board != nullptr)
-	{
-		board->DrawScores();
-	}
-}
-
-void Game::GameOver()
-{
-	ClearScreen();
-
-	puts("The Game Has Ended!");
-	//need a better way for htis
-	puts("Your score was: " + board->GetScore());
-}
-
-void Game::ClearScreen()
+void Game::_ClearScreen()
 {
 	system("CLS");
 }
 
-void Game::Test()
+void Game::_DrawGame()
 {
-	board->Test();
+	_ClearScreen();
+
+	if (_board != nullptr)
+	{
+		_board->DrawScores();
+	}
 }
 
-UserResponse* Game::GetUserInputAndClean()
+void Game::_GameOver()
+{
+	_ClearScreen();
+
+	puts("The Game Has Ended!");
+	puts("Your score was: " + _board->GetScore());
+}
+
+UserResponse* Game::_GetUserInputAndClean()
 {
 	return new UserResponse();	
 }

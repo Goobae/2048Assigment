@@ -1,7 +1,9 @@
 #pragma once
-#include "Direction.h"
+#include <iostream>
 #include <stack>  
 #include <string>
+
+#include "Direction.h"
 #include "Process.h"
 
 using namespace std;
@@ -9,32 +11,30 @@ using namespace std;
 class Piece
 {
 public:
-	Piece();
 	Piece(int x, int y);
 	~Piece();
 
 	int X;
 	int Y;
-	int GetScore();
-	int GetId();
+	Piece* NextPiece;
+	Piece* PrevPiece;
 
-	void SetScore(int score);
-	void SetId(int id);
-	void DrawScore();
 	void DrawCoordinates();
+	void DrawScore();
+	void SetId(int id);
+	void SetScore(int score);
 	void UndoScore();
-
+	int GetId();
+	int GetScore();
 	Piece* GetNextPiece(Direction dir, Process proc, int boardSize);
 	Piece* GetNextRowPiece(Direction dir, Process proc, int boardSize);
-	
-	Piece* nextPiece;
-	Piece* prevPiece;
 
 private:
-	Piece* GetAfter(int numIterations);
-	int currentScore;
+	int _currentScore;
+	int _id;
 	int _x;
 	int _y;
-	stack<int> _prevScores ;
-	int _id;
+	stack<int> _prevScores;
+
+	Piece* _GetAfter(int numIterations);	
 };

@@ -1,60 +1,23 @@
 #include "Piece.h"
-#include <iostream>
-
-Piece::Piece()
-{
-	prevPiece = nullptr;
-	nextPiece = nullptr;
-
-	currentScore = 0;
-
-	X =_x = 0;
-	Y =_y = 0;
-	_id = 0;
-}
 
 Piece::Piece(int x, int y)
 {
-	prevPiece = nullptr;
-	nextPiece = nullptr;
-
-	currentScore = 0;
+	_currentScore = 0;
+	_id = 0;
 
 	X = _x = x;
-	Y = _y = y;
-	_id = 0;
+	Y = _y = y;	
+
+	PrevPiece = nullptr;
+	NextPiece = nullptr;
 }
 
 Piece::~Piece()
 {
-	
-}
+	PrevPiece = nullptr;
+	NextPiece = nullptr;
 
-int Piece::GetScore()
-{
-	return currentScore;
-}
-
-
-int Piece::GetId()
-{
-	return _id;
-}
-
-void Piece::SetScore(int score)
-{
-	_prevScores.push(currentScore);
-	currentScore = score;
-}
-
-void Piece::SetId(int id)
-{
-	_id = id;
-}
-
-void Piece::DrawScore()
-{
-	cout << currentScore;
+	_prevScores.empty();
 }
 
 void Piece::DrawCoordinates()
@@ -62,13 +25,39 @@ void Piece::DrawCoordinates()
 	cout << "[" << _x << "," << _y << "]";
 }
 
+void Piece::DrawScore()
+{
+	cout << _currentScore;
+}
+
+void Piece::SetId(int id)
+{
+	_id = id;
+}
+
+void Piece::SetScore(int score)
+{
+	_prevScores.push(_currentScore);
+	_currentScore = score;
+}
+
 void Piece::UndoScore()
 {
 	if (!_prevScores.empty())
 	{
-		currentScore = _prevScores.top();
+		_currentScore = _prevScores.top();
 		_prevScores.pop();
 	}
+}
+
+int Piece::GetId()
+{
+	return _id;
+}
+
+int Piece::GetScore()
+{
+	return _currentScore;
 }
 
 Piece* Piece::GetNextPiece(Direction dir, Process proc, int boardSize)
@@ -80,16 +69,16 @@ Piece* Piece::GetNextPiece(Direction dir, Process proc, int boardSize)
 		switch (dir)
 		{
 		case Left:
-			return p->GetAfter(1);
+			return p->_GetAfter(1);
 			break;
 		case Up:
-			return p->GetAfter(boardSize);
+			return p->_GetAfter(boardSize);
 			break;
 		case Right:
-			return p->GetAfter(-1);
+			return p->_GetAfter(-1);
 			break;
 		case Down:
-			return p->GetAfter(-boardSize);
+			return p->_GetAfter(-boardSize);
 			break;
 		case Unknown:
 		default:
@@ -102,16 +91,16 @@ Piece* Piece::GetNextPiece(Direction dir, Process proc, int boardSize)
 		switch (dir)
 		{
 		case Left:
-			return p->GetAfter(-1);
+			return p->_GetAfter(-1);
 			break;
 		case Up:
-			return p->GetAfter(-boardSize);
+			return p->_GetAfter(-boardSize);
 			break;
 		case Right:
-			return p->GetAfter(1);
+			return p->_GetAfter(1);
 			break;
 		case Down:
-			return p->GetAfter(boardSize);
+			return p->_GetAfter(boardSize);
 			break;
 		case Unknown:
 		default:
@@ -130,16 +119,16 @@ Piece* Piece::GetNextRowPiece(Direction dir, Process proc, int boardSize)
 		switch (dir)
 		{
 		case Left:
-			return p->GetAfter(boardSize);
+			return p->_GetAfter(boardSize);
 			break;
 		case Up:
-			return p->GetAfter(1);
+			return p->_GetAfter(1);
 			break;
 		case Right:
-			return p->GetAfter(-boardSize);
+			return p->_GetAfter(-boardSize);
 			break;
 		case Down:
-			return p->GetAfter(-1);
+			return p->_GetAfter(-1);
 			break;
 		case Unknown:
 		default:
@@ -152,16 +141,16 @@ Piece* Piece::GetNextRowPiece(Direction dir, Process proc, int boardSize)
 		switch (dir)
 		{
 		case Left:
-			return p->GetAfter(-boardSize);
+			return p->_GetAfter(-boardSize);
 			break;
 		case Up:
-			return p->GetAfter(-1);
+			return p->_GetAfter(-1);
 			break;
 		case Right:
-			return p->GetAfter(boardSize);
+			return p->_GetAfter(boardSize);
 			break;
 		case Down:
-			return p->GetAfter(1);
+			return p->_GetAfter(1);
 			break;
 		case Unknown:
 		default:
@@ -171,7 +160,7 @@ Piece* Piece::GetNextRowPiece(Direction dir, Process proc, int boardSize)
 	}
 }
 
-Piece* Piece::GetAfter(int numIterations)
+Piece* Piece::_GetAfter(int numIterations)
 {
 	if (numIterations == 0)
 		return this;
@@ -183,22 +172,22 @@ Piece* Piece::GetAfter(int numIterations)
 		if (numIterations > 0) {
 
 			
-			if (p->nextPiece == nullptr)
+			if (p->NextPiece == nullptr)
 			{
 				return nullptr;
 			}
 
-			p = p->nextPiece;
+			p = p->NextPiece;
 			numIterations--;
 		}
 		else
 		{
-			if (p->prevPiece == nullptr)
+			if (p->PrevPiece == nullptr)
 			{
 				return nullptr;
 			}
 
-			p = p->prevPiece;
+			p = p->PrevPiece;
 			numIterations++;
 		}
 		

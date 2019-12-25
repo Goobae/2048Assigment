@@ -1,19 +1,20 @@
 #pragma once
+#include <conio.h>
+
 #include "Direction.h"
 #include "ResponseType.h"
-#include <conio.h>
+
+using namespace std;
 
 class UserResponse
 {
 public:
-
 	UserResponse();
 
 	bool IsContinue;
-	ResponseType ResponseType;
 	Direction Dir;
+	ResponseType ResponseType;
 
 private:
-	void CheckResponse();
+	void _CheckResponse();
 };
-

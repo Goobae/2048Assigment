@@ -1,12 +1,13 @@
 #pragma once
-#include <string>
-#include "Board.h"
 #include <conio.h>
 #include <iostream>
 #include <stdlib.h>
-#include "UserResponse.h"
-#include "ResponseType.h"
+#include <string>
+
+#include "Board.h"
 #include "Game.h"
+#include "ResponseType.h"
+#include "UserResponse.h"
 
 using namespace std;
 
@@ -19,17 +20,11 @@ public:
 	void Initialize();
 	void Play();
 
-	void TestFunc();
 private:
-	void DrawGame();
-	void GameOver();
-	void ClearScreen(); 
-	void Test();
+	Board* _board;
 
-	Board* board;
-
-	UserResponse* GetUserInputAndClean();
+	void _ClearScreen();
+	void _DrawGame();
+	void _GameOver();
+	UserResponse* _GetUserInputAndClean();
 };
-
-		
-

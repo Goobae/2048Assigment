@@ -1,16 +1,15 @@
 #include "UserResponse.h"
 
-
 UserResponse::UserResponse()
 {
-	ResponseType = ResponseType::Invalid;
 	Dir = Direction::Unknown;
 	IsContinue = true;
+	ResponseType = ResponseType::Invalid;
 
-	CheckResponse();
+	_CheckResponse();
 }
 
-void UserResponse::CheckResponse()
+void UserResponse::_CheckResponse()
 {
 	int ch = _getch(); 
 
