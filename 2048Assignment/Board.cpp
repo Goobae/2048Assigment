@@ -363,7 +363,7 @@ bool Board::ManageScores(Piece* curPiece, Piece* nextPiece)
 
 bool Board::ProcessNumber(int num)
 {
-	if (num != 0 && num != 2 && (num == 1 || num % 4 == 0))
+	if (num != 0 && num != 2 && num % 4 == 0 && num % 2 == 0)
 	{
 		return true;
 	}
