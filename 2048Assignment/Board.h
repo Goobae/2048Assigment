@@ -27,14 +27,12 @@ public:
 	void Undo();
 	void Test();
 	void Test2();
-	void GoThroughRows(std::function<void()> func);
 	
 	bool NoMoreMoves();
 	
 	void GenerateBoard();
 
 	void Test(Piece* p);
-	void loopAll(void (*f)(Piece*), int start = 0);
 private:
 	int boardSize;
 	int totalPieces;
@@ -42,12 +40,14 @@ private:
 	int smallestNumber;
 	int biggestNumber;
 
+	Piece* GetFirstPieceForDirectionAndProcess(Direction dir, int processId);
+
 	bool noMoreMoves;
 
 	Piece* Pieces_front;
 	Piece* Pieces_back;
 
-	void ProcessRow(Direction dir);
+	void ProcessRow(Direction dir, int processId);
 	void RemoveBlockingZeros(Direction dir);
 	void SetScores();
 	Piece* GetNextPiece(Piece* curPiece, Direction dir);

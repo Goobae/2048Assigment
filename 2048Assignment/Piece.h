@@ -23,7 +23,8 @@ public:
 	void DrawCoordinates();
 	void UndoScore();
 
-	Piece* GetNext(Direction dir, int boardSize);
+	Piece* GetNextPieceForDirectionAndBoardSize(Direction dir, int boardSize);
+	Piece* GetNextRowForDirectionAndBoardSize(Direction dir, int boardSize);
 	
 	Piece* nextPiece;
 	Piece* prevPiece;

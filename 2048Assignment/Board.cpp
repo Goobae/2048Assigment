@@ -166,20 +166,12 @@ void Board::Test()
 {
 	
 	Board b;
-	b.GoThroughRows(std::bind(&Board::Test2, b));
+	
 }
 
 void Board::Test2()
 {
 	cout << "a";
-}
-
-void Board::GoThroughRows(std::function<void()> func)//FrontTraverse
-{
-	for (int i = 0; i < boardSize * boardSize; i++)
-	{
-		func();
-	}
 }
 
 bool Board::NoMoreMoves()
@@ -231,124 +223,64 @@ void Board::GenerateBoard()
 	//} while (temp != nullptr);
 }
 
+Piece* Board::GetFirstPieceForDirectionAndProcess(Direction dir, int processId)
+{
+	if (processId == 1) //processId 1 = remove 0 in between pieces
+	{
+		
+		//removing 0's is out of the swipe
+		switch (dir)
+		{
+		case Left:	// <- SO ->
+		case Up:
+			return Pieces_front;
+		case Down:
+		case Right:	// -> SO <-
+			return Pieces_back;
+		case Unknown:
+		default:
+			return nullptr;
+		}
+	}
+	else if (processId == 2) // processId 2 = add up score
+	{
+		//just get direction of swipe
+		switch (dir)
+		{
+		case Left:
+		case Up:
+			return Pieces_back;
+		case Down:
+		case Right:
+			return Pieces_front;
+		case Unknown:
+		default:
+			return nullptr;
+		}
+	}
+	return nullptr;
+}
+
 void Board::Test(Piece* p)
 {
 	p->SetScore(100);
 }
 
-void Board::ProcessRow(Direction dir)
+void Board::ProcessRow(Direction dir, int processId)
 {
-	Piece* curPiece = Pieces_front;
-	Piece* nextPiece = Pieces_front;
+	Piece* curPiece = GetFirstPieceForDirectionAndProcess(dir, processId);
+	Piece* nextPiece = curPiece->GetNextPieceForDirectionAndBoardSize(dir, boardSize);
+	Piece* holderPiece = curPiece;
 
-	int curPieceGetAfter = 0;
-	int nextPieceGetAfter = 0;
-
-	/* remember that they are all linked left to right
-				[0, 0][1, 0][2, 0][3, 0]
-				[0, 1][1, 1][2, 1][3, 1]
-				[0, 2][1, 2][2, 2][3, 2]
-				[0, 3][1, 3][2, 3][3, 3]
-
-				[0, 0][1, 0][2, 0][3, 0][0, 1][1, 1][2, 1][3, 1][0, 2][1, 2][2, 2][3, 2][0, 3][1, 3][2, 3][3, 3]
-	*/
-
-	//iterate through the board to do the processing
-	int innerIter = 0;
-	int outerIter = 0;
-
-	//prep the loop
-	switch (dir)
+	while (holderPiece != nullptr)
 	{
-	case Right:
-		nextPiece = Pieces_front->GetAfter(1);
-		curPiece = Pieces_front;
-		break;
-	case Down:
-		nextPiece = Pieces_front->GetAfter(boardSize);
-		curPiece = Pieces_front;
-		break;
-	case Left:
-		nextPiece = Pieces_back->GetAfter(-1);
-		curPiece = Pieces_back;
-		break;
-	case Up:
-		nextPiece = Pieces_back->GetAfter(-boardSize);
-		curPiece = Pieces_back;
-		break;
-	}
-	   
-	do
-	{
-		innerIter = 0;
 		do
 		{
-			if (curPiece == nextPiece)
-			{
-				break;
-			}
 
-			if (nextPiece->GetScore() == 0)
-			{
-				nextPiece->SetScore(curPiece->GetScore());
-				curPiece->SetScore(0);
-			}
-			else if (curPiece->GetScore() != 0 && nextPiece->GetScore() != 0 && curPiece->GetScore() == nextPiece->GetScore())
-			{
-				nextPiece->SetScore(curPiece->GetScore() * 2);
-				curPiece->SetScore(0);
-			}
-			else
-			{
-				//else check if any valid moves exist??
-			}
-			
-
-			curPiece = nextPiece;
-			switch (dir)
-			{
-			case Right:
-				nextPiece = nextPiece->GetAfter(1);
-				break;
-			case Down:
-				nextPiece = nextPiece->GetAfter(boardSize);
-				break;
-			case Left:
-				nextPiece = nextPiece->GetAfter(-1);
-				break;
-			case Up:
-				nextPiece = nextPiece->GetAfter(-boardSize);
-				break;
-			}
-
-			innerIter++;
-
-		} while (innerIter < boardSize - 1);
-
-		outerIter++;
-
-		switch (dir)
-		{
-		case Right:
-			curPiece = Pieces_front->GetAfter(boardSize * outerIter);
-			nextPiece = curPiece->GetAfter(1);
-			break;
-		case Down:
-			curPiece = Pieces_front->GetAfter(outerIter);
-			nextPiece = curPiece->GetAfter(boardSize);
-			break;
-		case Left:
-			curPiece = Pieces_back->GetAfter(-boardSize * outerIter);
-			nextPiece = curPiece->GetAfter(-1);
-			break;
-		case Up:
-			curPiece = Pieces_back->GetAfter(-outerIter -1);
-			nextPiece = curPiece->GetAfter(-boardSize);
-			break;
-		}
+		} while (nextPiece != nullptr);
 		
-		
-	} while (outerIter < boardSize);
+	} 
+
 }
 
 void Board::RemoveBlockingZeros(Direction dir)
@@ -407,39 +339,40 @@ void Board::SetScores()
 
 Piece* Board::GetNextPiece(Piece* curPiece, Direction dir)
 {
-	//test to see if it is an edge piece
-	if (curPiece == nullptr || curPiece->GetId() % boardSize == 0) 
-	{
-		return nullptr;
-	}
+	throw new exception;
+	////test to see if it is an edge piece
+	//if (curPiece == nullptr || curPiece->GetId() % boardSize == 0) 
+	//{
+	//	return nullptr;
+	//}
 
-	switch (dir)
-	{
-	case Right:
-		if (curPiece->GetId() + 1 >= totalPieces)
-			return nullptr;
-		else
-			return curPiece->GetAfter(1);
-		break;
-	case Down:
-		if (curPiece->GetId() + boardSize >= totalPieces)
-			return nullptr;
-		else
-			return curPiece->GetAfter(boardSize);
-		break;
-	case Left:
-		if (curPiece->GetId() - 1 <= 0)
-			return nullptr;
-		else
-			return curPiece->GetAfter(-1);
-		break;
-	case Up:
-		if (curPiece->GetId() - boardSize <= 0)
-			return nullptr;
-		else
-			return curPiece->GetAfter(-boardSize);
-		break;
-	}
+	//switch (dir)
+	//{
+	//case Right:
+	//	if (curPiece->GetId() + 1 >= totalPieces)
+	//		return nullptr;
+	//	else
+	//		return curPiece->GetAfter(1);
+	//	break;
+	//case Down:
+	//	if (curPiece->GetId() + boardSize >= totalPieces)
+	//		return nullptr;
+	//	else
+	//		return curPiece->GetAfter(boardSize);
+	//	break;
+	//case Left:
+	//	if (curPiece->GetId() - 1 <= 0)
+	//		return nullptr;
+	//	else
+	//		return curPiece->GetAfter(-1);
+	//	break;
+	//case Up:
+	//	if (curPiece->GetId() - boardSize <= 0)
+	//		return nullptr;
+	//	else
+	//		return curPiece->GetAfter(-boardSize);
+	//	break;
+	//}
 	return nullptr;
 }
 
@@ -456,6 +389,7 @@ Direction Board::GetOppoDir(Direction dir)
 	case Down:
 		return Up;
 	case Unknown:
+	default:
 		return dir;
 	}
 }
@@ -496,22 +430,109 @@ bool Board::ProcessNumber(int num)
 	return false;
 }
 
-void Board::loopAll(void(*f)(Piece*), int start)
-{
-	//need to start opposite of the swipe
-	Piece* curPiece = Pieces_front;
-	Piece* nextPiece = Pieces_front->nextPiece;
+/*
 
-	int iter = 0;
+
+	 remember that they are all linked left to right
+				[0, 0][1, 0][2, 0][3, 0]
+				[0, 1][1, 1][2, 1][3, 1]
+				[0, 2][1, 2][2, 2][3, 2]
+				[0, 3][1, 3][2, 3][3, 3]
+
+				[0, 0][1, 0][2, 0][3, 0][0, 1][1, 1][2, 1][3, 1][0, 2][1, 2][2, 2][3, 2][0, 3][1, 3][2, 3][3, 3]
+	
+	//iterate through the board to do the processing
+int innerIter = 0;
+int outerIter = 0;
+
+//prep the loop
+switch (dir)
+{
+case Right:
+	nextPiece = Pieces_front->GetAfter(1);
+	curPiece = Pieces_front;
+	break;
+case Down:
+	nextPiece = Pieces_front->GetAfter(boardSize);
+	curPiece = Pieces_front;
+	break;
+case Left:
+	nextPiece = Pieces_back->GetAfter(-1);
+	curPiece = Pieces_back;
+	break;
+case Up:
+	nextPiece = Pieces_back->GetAfter(-boardSize);
+	curPiece = Pieces_back;
+	break;
+}
+
+do
+{
+	innerIter = 0;
 	do
 	{
-		if (iter >= start)
+		if (curPiece == nextPiece)
 		{
-			f(curPiece);
-		}		
+			break;
+		}
+
+		if (nextPiece->GetScore() == 0)
+		{
+			nextPiece->SetScore(curPiece->GetScore());
+			curPiece->SetScore(0);
+		}
+		else if (curPiece->GetScore() != 0 && nextPiece->GetScore() != 0 && curPiece->GetScore() == nextPiece->GetScore())
+		{
+			nextPiece->SetScore(curPiece->GetScore() * 2);
+			curPiece->SetScore(0);
+		}
+		else
+		{
+			//else check if any valid moves exist??
+		}
+
 
 		curPiece = nextPiece;
-		nextPiece = nextPiece->nextPiece;
+		switch (dir)
+		{
+		case Right:
+			nextPiece = nextPiece->GetAfter(1);
+			break;
+		case Down:
+			nextPiece = nextPiece->GetAfter(boardSize);
+			break;
+		case Left:
+			nextPiece = nextPiece->GetAfter(-1);
+			break;
+		case Up:
+			nextPiece = nextPiece->GetAfter(-boardSize);
+			break;
+		}
 
-	} while (nextPiece != nullptr);
-}
+		innerIter++;
+
+	} while (innerIter < boardSize - 1);
+
+	outerIter++;
+
+	switch (dir)
+	{
+	case Right:
+		curPiece = Pieces_front->GetAfter(boardSize * outerIter);
+		nextPiece = curPiece->GetAfter(1);
+		break;
+	case Down:
+		curPiece = Pieces_front->GetAfter(outerIter);
+		nextPiece = curPiece->GetAfter(boardSize);
+		break;
+	case Left:
+		curPiece = Pieces_back->GetAfter(-boardSize * outerIter);
+		nextPiece = curPiece->GetAfter(-1);
+		break;
+	case Up:
+		curPiece = Pieces_back->GetAfter(-outerIter - 1);
+		nextPiece = curPiece->GetAfter(-boardSize);
+		break;
+	}
+
+*/
