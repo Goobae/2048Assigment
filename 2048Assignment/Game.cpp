@@ -29,7 +29,7 @@ void Game::Play()
 			{
 				Test();
 			}
-			else if (input->Dir == IsMove)
+			else if (input->ResponseType == IsMove)
 			{
 				board->Swipe(input->Dir);
 			}

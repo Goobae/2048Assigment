@@ -185,7 +185,7 @@ Piece* Piece::GetAfter(int numIterations)
 			
 			if (p->nextPiece == nullptr)
 			{
-				return this;
+				return nullptr;
 			}
 
 			p = p->nextPiece;
@@ -195,7 +195,7 @@ Piece* Piece::GetAfter(int numIterations)
 		{
 			if (p->prevPiece == nullptr)
 			{
-				return this;
+				return nullptr;
 			}
 
 			p = p->prevPiece;

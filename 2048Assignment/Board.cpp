@@ -34,13 +34,13 @@ Board::~Board()
 
 void Board::SetRandomScores()
 {
-	Piece* p = GetPiece(0, 3);
+	Piece* p = GetPiece(0, 0);
 	p->SetScore(2);
 
 	//p = GetPiece(1, 3);
 	//p->SetScore(2);
 
-	p = GetPiece(2, 3);
+	p = GetPiece(3, 0);
 	p->SetScore(2);
 	//SetNextRandomPiece();
 	//SetNextRandomPiece();
@@ -266,6 +266,8 @@ void Board::ProcessRow(Direction dir, Process proc)
 	Piece* nextPiece = curPiece->GetNextPiece(dir, proc, boardSize);
 	Piece* holderPiece = curPiece;
 
+	bool reset = false;
+
 	while (holderPiece != nullptr)
 	{
 		do
@@ -273,41 +275,90 @@ void Board::ProcessRow(Direction dir, Process proc)
 			switch (proc)
 			{
 			case ProcessZeros:
-				ManageZeros(curPiece, nextPiece);
+				if (ManageZeros(curPiece, nextPiece))
+				{
+					reset = true;
+				}
 				break;
 			case ProcessScores:
-				ManageScores(curPiece, nextPiece);
+				if (ManageScores(curPiece, nextPiece))
+				{
+					reset = true;
+				}
 				break;
 			default:
 				break;
 			}
 
+			if (reset) 
+			{
+				nextPiece = holderPiece;
+				reset = false;
+			}
+
 			curPiece = nextPiece;
 			nextPiece = curPiece->GetNextPiece(dir, proc, boardSize);
-		} while (nextPiece != nullptr);
+			
+		} while (IsStillSameRow(curPiece, nextPiece, dir));
 		
+		curPiece = holderPiece->GetNextRowPiece(dir, proc, boardSize);
 
-		curPiece = holderPiece;
-		holderPiece = holderPiece->GetNextRowPiece(dir, proc, boardSize);
+		if (curPiece == nullptr)
+			break;
+
+		nextPiece = curPiece->GetNextPiece(dir, proc, boardSize);
+		holderPiece = curPiece;
 	} 
 }
 
-void Board::ManageZeros(Piece* curPiece, Piece* nextPiece)
+bool Board::IsStillSameRow(Piece* curPiece, Piece* nextPiece, Direction dir)
 {
-	if (nextPiece->GetScore() == 0)
+	if (curPiece == nullptr || nextPiece == nullptr)
 	{
-		nextPiece->SetScore(curPiece->GetScore());
-		curPiece->SetScore(0);;
+		return false;
 	}
+
+	switch (dir)
+	{
+	case Right:
+	case Left:
+		return curPiece->Y == nextPiece->Y;
+	case Up:
+	case Down:
+		return curPiece->X == nextPiece->X;
+	case Unknown:
+	default:
+		//this is an error
+		return false;
+	}
+
+	return false;
 }
 
-void Board::ManageScores(Piece* curPiece, Piece* nextPiece)
+bool Board::ManageZeros(Piece* curPiece, Piece* nextPiece)
+{
+	if (curPiece->GetScore() == 0 && nextPiece->GetScore())
+	{
+		curPiece->SetScore(nextPiece->GetScore());
+		nextPiece->SetScore(0);;
+
+		return true;
+	}
+
+	return false;
+}
+
+bool Board::ManageScores(Piece* curPiece, Piece* nextPiece)
 {
 	if (ProcessNumber(curPiece->GetScore() + nextPiece->GetScore()))
 	{
 		nextPiece->SetScore(curPiece->GetScore() + nextPiece->GetScore());
 		curPiece->SetScore(0);
+
+		return true;
 	}
+
+	return false;
 }
 
 bool Board::ProcessNumber(int num)

@@ -50,8 +50,10 @@ private:
 
 	void ProcessRow(Direction dir, Process proc);
 
-	void ManageZeros(Piece* curPiece, Piece* nextPiece);
-	void ManageScores(Piece* curPiece, Piece* nextPiece);
+	bool IsStillSameRow(Piece* curPiece, Piece* nextPiece, Direction dir);
+
+	bool ManageZeros(Piece* curPiece, Piece* nextPiece);
+	bool ManageScores(Piece* curPiece, Piece* nextPiece);
 
 
 
