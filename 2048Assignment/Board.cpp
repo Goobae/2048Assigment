@@ -148,7 +148,7 @@ void Board::Swipe(Direction direction)
 	if (direction != Unknown)
 	{
 		ProcessRow(direction, ProcessZeros);
-		//ProcessRow(direction, 2);
+		ProcessRow(direction, ProcessScores);
 	}
 
 	//SetScores();
@@ -267,8 +267,9 @@ void Board::ProcessRow(Direction dir, Process proc)
 	Piece* holderPiece = curPiece;
 
 	bool reset = false;
-
-	while (holderPiece != nullptr)
+	int counter = 0;
+	 
+	while (counter < boardSize)
 	{
 		do
 		{
@@ -281,10 +282,7 @@ void Board::ProcessRow(Direction dir, Process proc)
 				}
 				break;
 			case ProcessScores:
-				if (ManageScores(curPiece, nextPiece))
-				{
-					reset = true;
-				}
+				ManageScores(curPiece, nextPiece);
 				break;
 			default:
 				break;
@@ -308,6 +306,8 @@ void Board::ProcessRow(Direction dir, Process proc)
 
 		nextPiece = curPiece->GetNextPiece(dir, proc, boardSize);
 		holderPiece = curPiece;
+
+		counter++;
 	} 
 }
 
@@ -363,7 +363,7 @@ bool Board::ManageScores(Piece* curPiece, Piece* nextPiece)
 
 bool Board::ProcessNumber(int num)
 {
-	if (num == 1 || num % 2 == 0)
+	if (num != 0 && num != 2 && (num == 1 || num % 4 == 0))
 	{
 		return true;
 	}
