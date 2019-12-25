@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include "Process.h"
 
 
 using namespace std::placeholders;
@@ -40,17 +41,23 @@ private:
 	int smallestNumber;
 	int biggestNumber;
 
-	Piece* GetFirstPieceForDirectionAndProcess(Direction dir, int processId);
+	Piece* GetFirstPieceForDirectionAndProcess(Direction dir, Process proc);
 
 	bool noMoreMoves;
 
 	Piece* Pieces_front;
 	Piece* Pieces_back;
 
-	void ProcessRow(Direction dir, int processId);
-	void RemoveBlockingZeros(Direction dir);
+	void ProcessRow(Direction dir, Process proc);
+
+	void ManageZeros(Piece* curPiece, Piece* nextPiece);
+	void ManageScores(Piece* curPiece, Piece* nextPiece);
+
+
+
+
 	void SetScores();
-	Piece* GetNextPiece(Piece* curPiece, Direction dir);
+
 	Direction GetOppoDir(Direction dir);
 	void SetNextRandomPiece();
 	bool ProcessNumber(int num);

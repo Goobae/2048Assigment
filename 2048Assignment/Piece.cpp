@@ -71,55 +71,103 @@ void Piece::UndoScore()
 	}
 }
 
-Piece* Piece::GetNextPieceForDirectionAndBoardSize(Direction dir, int boardSize)
+Piece* Piece::GetNextPiece(Direction dir, Process proc, int boardSize)
 {
 	Piece* p = this;
 
-	switch (dir)
+	if (proc == ProcessZeros)
 	{
-	case Left:
-		return p->GetAfter(-1);
-		break;
-	case Up:
-		return p->GetAfter(-boardSize);
-		break;
-	case Right:
-		return p->GetAfter(1);
-		break;
-	case Down:
-		return p->GetAfter(boardSize);
-		break;
-	case Unknown:
-	default:
-		return nullptr;
-		break;
+		switch (dir)
+		{
+		case Left:
+			return p->GetAfter(1);
+			break;
+		case Up:
+			return p->GetAfter(boardSize);
+			break;
+		case Right:
+			return p->GetAfter(-1);
+			break;
+		case Down:
+			return p->GetAfter(-boardSize);
+			break;
+		case Unknown:
+		default:
+			return nullptr;
+			break;
+		}
+	}
+	else if (proc == ProcessScores)
+	{
+		switch (dir)
+		{
+		case Left:
+			return p->GetAfter(-1);
+			break;
+		case Up:
+			return p->GetAfter(-boardSize);
+			break;
+		case Right:
+			return p->GetAfter(1);
+			break;
+		case Down:
+			return p->GetAfter(boardSize);
+			break;
+		case Unknown:
+		default:
+			return nullptr;
+			break;
+		}
 	}
 }
 
-Piece* Piece::GetNextRowForDirectionAndBoardSize(Direction dir, int boardSize)
+Piece* Piece::GetNextRowPiece(Direction dir, Process proc, int boardSize)
 {
-	throw new exception();
-
 	Piece* p = this;
 
-	switch (dir)
+	if (proc == ProcessZeros)
 	{
-	case Left:
-		return p->GetAfter(-1);
-		break;
-	case Up:
-		return p->GetAfter(-boardSize);
-		break;
-	case Right:
-		return p->GetAfter(1);
-		break;
-	case Down:
-		return p->GetAfter(boardSize);
-		break;
-	case Unknown:
-	default:
-		return nullptr;
-		break;
+		switch (dir)
+		{
+		case Left:
+			return p->GetAfter(boardSize);
+			break;
+		case Up:
+			return p->GetAfter(1);
+			break;
+		case Right:
+			return p->GetAfter(-boardSize);
+			break;
+		case Down:
+			return p->GetAfter(-1);
+			break;
+		case Unknown:
+		default:
+			return nullptr;
+			break;
+		}
+	}
+	else if (proc == ProcessScores)
+	{
+		switch (dir)
+		{
+		case Left:
+			return p->GetAfter(-boardSize);
+			break;
+		case Up:
+			return p->GetAfter(-1);
+			break;
+		case Right:
+			return p->GetAfter(boardSize);
+			break;
+		case Down:
+			return p->GetAfter(1);
+			break;
+		case Unknown:
+		default:
+			return nullptr;
+			break;
+		}
 	}
 }
 

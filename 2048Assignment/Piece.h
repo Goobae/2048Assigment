@@ -2,6 +2,7 @@
 #include "Direction.h"
 #include <stack>  
 #include <string>
+#include "Process.h"
 
 using namespace std;
 
@@ -23,8 +24,8 @@ public:
 	void DrawCoordinates();
 	void UndoScore();
 
-	Piece* GetNextPieceForDirectionAndBoardSize(Direction dir, int boardSize);
-	Piece* GetNextRowForDirectionAndBoardSize(Direction dir, int boardSize);
+	Piece* GetNextPiece(Direction dir, Process proc, int boardSize);
+	Piece* GetNextRowPiece(Direction dir, Process proc, int boardSize);
 	
 	Piece* nextPiece;
 	Piece* prevPiece;

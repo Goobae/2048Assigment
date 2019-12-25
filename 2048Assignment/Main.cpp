@@ -2,7 +2,6 @@
 #include <string>
 
 #include "GReturn.h"
-#include "SwipeBehavior.h"
 #include "Board.h"
 #include "Game.h"
 

@@ -120,8 +120,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GReturn.h" />
     <ClInclude Include="Piece.h" />
+    <ClInclude Include="Process.h" />
     <ClInclude Include="ResponseType.h" />
-    <ClInclude Include="SwipeBehavior.h" />
     <ClInclude Include="UserResponse.h" />
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +130,6 @@
     <ClCompile Include="GReturn.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Piece.cpp" />
-    <ClCompile Include="SwipeBehavior.cpp" />
     <ClCompile Include="UserResponse.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
