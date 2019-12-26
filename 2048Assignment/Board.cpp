@@ -10,7 +10,9 @@
 		[0, 0][1, 0][2, 0][3, 0][0, 1][1, 1][2, 1][3, 1][0, 2][1, 2][2, 2][3, 2][0, 3][1, 3][2, 3][3, 3]
 
 	Left To do:
-		Fix addition process flow so that it adds numbers from the opposite side.
+		Need to adjust the spawning of the smallest number so that it grows with the game and that it doesnt spawn numbers with an invalid move
+		Undo when game ends
+		Display score accurately when game over
 */
 
 Board::Board()
@@ -126,7 +128,10 @@ void Board::SetRandomScores()
 	Piece* p = GetPiece(0, 0);
 	p->SetScore(2);
 
-	p = GetPiece(3, 0);
+	p = GetPiece(1, 0);
+	p->SetScore(2);
+
+	p = GetPiece(2, 0);
 	p->SetScore(2);
 	//_SetNextRandomPiece();
 }
@@ -293,8 +298,8 @@ bool Board::_ProcessNumber(Piece* curPiece, Piece* nextPiece)
 
 bool Board::_ProcessRow(Direction dir, Process proc)
 {
-	Piece* curPiece = _GetFirstPiece(dir, proc);
-	Piece* nextPiece = curPiece->GetNextPiece(dir, proc, _boardSize);
+	Piece* curPiece = _GetFirstPiece(dir);
+	Piece* nextPiece = curPiece->GetNextPiece(dir, _boardSize);
 	Piece* holderPiece = curPiece;
 
 	bool reset = false;
@@ -316,6 +321,7 @@ bool Board::_ProcessRow(Direction dir, Process proc)
 			case ProcessScores:
 				if (_ManageScores(curPiece, nextPiece))
 				{
+					reset = true;
 					isMasterReset = true;
 				}
 				break;
@@ -330,16 +336,16 @@ bool Board::_ProcessRow(Direction dir, Process proc)
 			}
 
 			curPiece = nextPiece;
-			nextPiece = curPiece->GetNextPiece(dir, proc, _boardSize);
+			nextPiece = curPiece->GetNextPiece(dir, _boardSize);
 
 		} while (_IsStillSameRow(curPiece, nextPiece, dir));
 
-		curPiece = holderPiece->GetNextRowPiece(dir, proc, _boardSize);
+		curPiece = holderPiece->GetNextRowPiece(dir, _boardSize);
 
 		if (curPiece == nullptr)
 			break;
 
-		nextPiece = curPiece->GetNextPiece(dir, proc, _boardSize);
+		nextPiece = curPiece->GetNextPiece(dir, _boardSize);
 		holderPiece = curPiece;
 
 		counter++;
@@ -348,39 +354,20 @@ bool Board::_ProcessRow(Direction dir, Process proc)
 	return isMasterReset;
 }
 
-Piece* Board::_GetFirstPiece(Direction dir, Process proc)
+Piece* Board::_GetFirstPiece(Direction dir)
 {
-	if (proc == ProcessZeros) //proc 1 = remove 0 in between pieces
+	switch (dir)
 	{
-		//removing 0's is out of the swipe
-		switch (dir)
-		{
-		case Left:	// <- SO ->
-		case Up:
-			return _piecesFront;
-		case Down:
-		case Right:	// -> SO <-
-			return _piecesBack;
-		case Unknown:
-		default:
-			return nullptr;
-		}
+	case Left:	// <- SO ->
+	case Up:
+		return _piecesFront;
+	case Down:
+	case Right:	// -> SO <-
+		return _piecesBack;
+	case Unknown:
+	default:
+		return nullptr;
 	}
-	else if (proc == ProcessScores) // proc 2 = add up score
-	{
-		//just get direction of swipe
-		switch (dir)
-		{
-		case Left:
-		case Up:
-			return _piecesBack;
-		case Down:
-		case Right:
-			return _piecesFront;
-		case Unknown:
-		default:
-			return nullptr;
-		}
-	}
+
 	return nullptr;
 }

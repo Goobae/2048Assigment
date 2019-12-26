@@ -41,6 +41,13 @@ void Game::Initialize()
 	_board->SetRandomScores();
 }
 
+void Game::_DrawControls()
+{
+	puts("Use Arrows to Move.");
+	puts("'X' is Exit, and 'U' is Undo.");
+	puts("");
+}
+
 void Game::_ClearScreen()
 {
 	system("CLS");
@@ -49,6 +56,7 @@ void Game::_ClearScreen()
 void Game::_DrawGame()
 {
 	_ClearScreen();
+	_DrawControls();
 
 	if (_board != nullptr)
 	{
@@ -58,7 +66,7 @@ void Game::_DrawGame()
 
 void Game::_GameOver()
 {
-	_ClearScreen();
+	_DrawGame();
 
 	puts("The Game Has Ended!");
 	puts("Your score was: " + _board->GetScore());

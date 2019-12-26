@@ -45,5 +45,5 @@ private:
 	bool _ManageZeros(Piece* curPiece, Piece* nextPiece);
 	bool _ProcessNumber(Piece* curPiece, Piece* nextPiece);
 	bool _ProcessRow(Direction dir, Process proc);
-	Piece* _GetFirstPiece(Direction dir, Process proc);
+	Piece* _GetFirstPiece(Direction dir);
 };

@@ -60,103 +60,53 @@ int Piece::GetScore()
 	return _currentScore;
 }
 
-Piece* Piece::GetNextPiece(Direction dir, Process proc, int boardSize)
+Piece* Piece::GetNextPiece(Direction dir, int boardSize)
 {
 	Piece* p = this;
 
-	if (proc == ProcessZeros)
+	switch (dir)
 	{
-		switch (dir)
-		{
-		case Left:
-			return p->_GetAfter(1);
-			break;
-		case Up:
-			return p->_GetAfter(boardSize);
-			break;
-		case Right:
-			return p->_GetAfter(-1);
-			break;
-		case Down:
-			return p->_GetAfter(-boardSize);
-			break;
-		case Unknown:
-		default:
-			return nullptr;
-			break;
-		}
-	}
-	else if (proc == ProcessScores)
-	{
-		switch (dir)
-		{
-		case Left:
-			return p->_GetAfter(-1);
-			break;
-		case Up:
-			return p->_GetAfter(-boardSize);
-			break;
-		case Right:
-			return p->_GetAfter(1);
-			break;
-		case Down:
-			return p->_GetAfter(boardSize);
-			break;
-		case Unknown:
-		default:
-			return nullptr;
-			break;
-		}
+	case Left:
+		return p->_GetAfter(1);
+		break;
+	case Up:
+		return p->_GetAfter(boardSize);
+		break;
+	case Right:
+		return p->_GetAfter(-1);
+		break;
+	case Down:
+		return p->_GetAfter(-boardSize);
+		break;
+	case Unknown:
+	default:
+		return nullptr;
+		break;
 	}
 }
 
-Piece* Piece::GetNextRowPiece(Direction dir, Process proc, int boardSize)
+Piece* Piece::GetNextRowPiece(Direction dir, int boardSize)
 {
 	Piece* p = this;
 
-	if (proc == ProcessZeros)
+	switch (dir)
 	{
-		switch (dir)
-		{
-		case Left:
-			return p->_GetAfter(boardSize);
-			break;
-		case Up:
-			return p->_GetAfter(1);
-			break;
-		case Right:
-			return p->_GetAfter(-boardSize);
-			break;
-		case Down:
-			return p->_GetAfter(-1);
-			break;
-		case Unknown:
-		default:
-			return nullptr;
-			break;
-		}
-	}
-	else if (proc == ProcessScores)
-	{
-		switch (dir)
-		{
-		case Left:
-			return p->_GetAfter(-boardSize);
-			break;
-		case Up:
-			return p->_GetAfter(-1);
-			break;
-		case Right:
-			return p->_GetAfter(boardSize);
-			break;
-		case Down:
-			return p->_GetAfter(1);
-			break;
-		case Unknown:
-		default:
-			return nullptr;
-			break;
-		}
+	case Left:
+		return p->_GetAfter(boardSize);
+		break;
+	case Up:
+		return p->_GetAfter(1);
+		break;
+	case Right:
+		return p->_GetAfter(-boardSize);
+		break;
+	case Down:
+		return p->_GetAfter(-1);
+		break;
+	case Unknown:
+	default:
+		return nullptr;
+		break;
 	}
 }
 

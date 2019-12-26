@@ -26,8 +26,8 @@ public:
 	void UndoScore();
 	int GetId();
 	int GetScore();
-	Piece* GetNextPiece(Direction dir, Process proc, int boardSize);
-	Piece* GetNextRowPiece(Direction dir, Process proc, int boardSize);
+	Piece* GetNextPiece(Direction dir, int boardSize);
+	Piece* GetNextRowPiece(Direction dir, int boardSize);
 
 private:
 	int _currentScore;
