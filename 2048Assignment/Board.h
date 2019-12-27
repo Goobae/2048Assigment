@@ -29,7 +29,7 @@ public:
 		
 private:
 	bool _noMoreMoves;
-	int _answerArraySize = 12;
+	int _answerArraySize = 16;
 	int _biggestNumber;
 	int _boardSize;
 	int _smallestNumber;

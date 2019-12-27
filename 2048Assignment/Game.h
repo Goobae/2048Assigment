@@ -21,11 +21,13 @@ public:
 	void Play();
 
 private:
+	bool isLoaded = false;
 	Board* _board;
 
 	void _ClearScreen();
 	void _DrawControls();
 	void _DrawGame();
 	void _GameOver();
+	bool _WillUserUndo();
 	UserResponse* _GetUserInputAndClean();
 };

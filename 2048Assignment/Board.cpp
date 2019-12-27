@@ -10,7 +10,7 @@
 		[0, 0][1, 0][2, 0][3, 0][0, 1][1, 1][2, 1][3, 1][0, 2][1, 2][2, 2][3, 2][0, 3][1, 3][2, 3][3, 3]
 
 	Left To do:
-		Need to adjust the spawning of the smallest number so that it grows with the game and that it doesnt spawn numbers with an invalid move
+		Fix spawning numbers with an invalid move
 		Undo when game ends
 		Display score accurately when game over
 */
@@ -146,7 +146,6 @@ void Board::Swipe(Direction direction)
 			_ProcessRow(direction, ProcessZeros);
 			redo = _ProcessRow(direction, ProcessScores);
 		}
-
 	}
 
 	_SetNextRandomPiece();
@@ -205,6 +204,8 @@ void Board::_PrimeAnswerArray()
 
 void Board::_SetNextRandomPiece()
 {
+	int tempSmallest = INT_MAX;
+	int tempBiggest = -1;
 	Piece* p = _piecesFront;
 	vector<Piece*> emptyPieces;
 
@@ -215,9 +216,29 @@ void Board::_SetNextRandomPiece()
 			emptyPieces.push_back(p);
 		}
 
+		if (p->GetScore() > 0 && p->GetScore() && p->GetScore() < tempSmallest)
+		{
+			tempSmallest = p->GetScore();
+		}
+
+		if (tempBiggest == -1 || p->GetScore() > tempBiggest)
+		{
+			tempBiggest = p->GetScore();
+		}
+
 		p = p->NextPiece;
 
 	} while (p->NextPiece != nullptr);
+
+	if (tempBiggest > _biggestNumber)
+	{
+		_biggestNumber = tempBiggest;
+	}
+
+	if (tempSmallest > _smallestNumber)
+	{
+		_smallestNumber = tempSmallest;
+	}
 
 	if (emptyPieces.size() == 0) {
 		_noMoreMoves = true;
